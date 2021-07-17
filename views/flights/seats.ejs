@@ -1,0 +1,146 @@
+<%- include("../head.ejs") %> 
+<body>
+    <%- include("partials/header.ejs") %>
+
+    <div class="uk-section uk-section-muted uk-padding-remove mf-container">
+        <div class="uk-container uk-flex uk-flex-between">
+
+            <div class="mf-plane-seating uk-width-2-5">
+                <!-- FIRST CLASS SECTION -->
+                <div class="mf-first-class">
+                    <div><p class="uk-text-center uk-text-light uk-text-large">First Class</p></div>
+                    <div class="mf-plane-row uk-flex uk-flex-between uk-margin-remove">
+                    <% plane_chart.sections.first_class.keys.forEach((key) => { %>
+                        <% if (key !== 'isle') { %>
+                        <div class="mf-letter"><p class="uk-text-center"><%= key %></p></div>
+                        <% } else { %>
+                            <div class="mf-isle uk-flex uk-flex-middle uk-flex-center"><span></span></div>
+                        <% } %>
+                    <% }) %>
+                    </div>
+
+                    <% plane_chart.sections.first_class.rows.forEach((row, index) => { %>
+                        <div class="mf-plane-row uk-flex uk-flex-between">
+                            <% row.forEach((seat) => { %>
+                                <% if(seat.isle) { %>
+                                    <div class="mf-isle uk-flex uk-flex-middle uk-flex-center"><span><%= index + 1 %></span></div>
+                                <% } else { %>
+                                    <% if(!seat.available) { %>
+                                        <div class="mf-seat first-class unavailable uk-flex uk-flex-middle uk-flex-center">
+                                            <span uk-icon="icon: close; ratio: 1.6"></span>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="mf-seat first-class"></div>
+                                    <% } %>
+                                <% } %>
+                                
+                            <% }) %>
+                        </div>
+                    <% }) %>
+                </div>
+                <!-- END FIRST CLASS -->
+
+                <!-- PREFERRED SECTION -->
+                <div class="mf-preferred-class">
+                    <div><p class="uk-text-center uk-text-large uk-text-light">Preferred</p></div>
+
+                    <div class="mf-plane-row uk-flex uk-flex-between uk-margin-remove">
+                        <% plane_chart.sections.preferred_class.keys.forEach((key) => { %>
+                            <% if (key !== 'isle') { %>
+                            <div class="mf-letter"><p class="uk-text-center"><%= key %></p></div>
+                            <% } else { %>
+                                <div class="mf-isle uk-flex uk-flex-middle uk-flex-center"><span></span></div>
+                            <% } %>
+                        <% }) %>
+                    </div>
+
+                    <% plane_chart.sections.preferred_class.rows.forEach((row, index) => { %>
+                        <div class="mf-plane-row uk-flex uk-flex-between">
+                            <% row.forEach((seat) => { %>
+                                <% if(seat.isle) { %>
+                                    <div class="mf-isle uk-flex uk-flex-middle uk-flex-center"><span><%= index + plane_chart.sections.first_class.total_rows + 1 %></span></div>
+                                <% } else { %>
+                                    <% if(!seat.available) { %>
+                                        <% if(seat.exit === true) { %>
+                                            <div class="mf-seat preferred unavailable uk-flex uk-flex-middle uk-flex-center mf-exit-seat">
+                                                <span uk-icon="icon: close; ratio: 1.3"></span>
+                                            </div>
+                                        <% } else { %>
+                                            <div class="mf-seat preferred unavailable uk-flex uk-flex-middle uk-flex-center">
+                                                <span uk-icon="icon: close; ratio: 1.3"></span>
+                                            </div>
+                                        <% } %>
+                                    <% } else { %>
+                                        <% if(seat.exit === true) { %>
+                                            <div class="mf-seat preferred uk-flex uk-flex-middle uk-flex-center mf-exit-seat"></div>
+                                        <% } else { %>
+                                            <div class="mf-seat preferred uk-flex uk-flex-middle uk-flex-center"></div>
+                                        <% } %>
+                                    <% } %>
+                                <% } %>
+                                
+                            <% }) %>
+                        </div>
+                    <% }) %>
+                </div>
+                <!-- END PREFERRED -->
+
+                <!-- ECONOMY SECTION -->
+                <div class="mf-economy-class ux-flex">
+                    <div><p class="uk-text-center uk-text-light uk-text-large">Economy</p></div>
+
+                    <div class="mf-plane-row uk-flex uk-flex-between uk-margin-remove">
+                        <% plane_chart.sections.economy_class.keys.forEach((key) => { %>
+                            <% if (key !== 'isle') { %>
+                            <div class="mf-letter"><p class="uk-text-center"><%= key %></p></div>
+                            <% } else { %>
+                                <div class="mf-isle uk-flex uk-flex-middle uk-flex-center"><span></span></div>
+                            <% } %>
+                        <% }) %>
+                    </div>
+
+                    <% plane_chart.sections.economy_class.rows.forEach((row, index) => { %>
+                        <div class="mf-plane-row uk-flex uk-flex-between">
+                            <% row.forEach((seat) => { %>
+                                <% if(seat.isle) { %>
+                                    <div class="mf-isle uk-flex uk-flex-middle uk-flex-center"><span><%= index + plane_chart.sections.first_class.total_rows + plane_chart.sections.preferred_class.total_rows + 1 %></span></div>
+                                <% } else { %>
+                                    <% if(!seat.available) { %>
+                                        <% if(seat.exit === true) { %>
+                                            <div class="mf-seat economy unavailable uk-flex uk-flex-middle uk-flex-center mf-exit-seat">
+                                                <span uk-icon="icon: close; ratio: 1.3"></span>
+                                            </div>
+                                        <% } else { %>
+                                            <div class="mf-seat economy unavailable uk-flex uk-flex-middle uk-flex-center">
+                                                <span uk-icon="icon: close; ratio: 1.3"></span>
+                                            </div>
+                                        <% } %>
+                                    <% } else { %>
+                                        <% if(seat.exit === true) { %>
+                                            <div class="mf-seat economy uk-flex uk-flex-middle uk-flex-center mf-exit-seat"></div>
+                                        <% } else { %>
+                                            <div class="mf-seat economy uk-flex uk-flex-middle uk-flex-center"></div>
+                                        <% } %>
+                                    <% } %>
+                                <% } %>
+                                
+                            <% }) %>
+                        </div>
+                    <% }) %>
+                </div>
+                <!-- END ECONOMY -->
+            </div>
+            <!-- START NAVIGATION -->
+            <div class="uk-width-2-5">
+                <div class="uk-card uk-card-default uk-card-body uk-position-fixed" style="z-index: 100; top: 200px;">Stick to the top but only after 200px scrolling</div>
+            </div>
+        </div>
+
+        <div class="mf-plane-icon">
+            <i class="material-icons airplane">airplanemode_active</i>
+        </div>
+    </div>
+
+
+</body>
+</html>

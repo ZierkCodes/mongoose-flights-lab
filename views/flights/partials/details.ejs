@@ -1,0 +1,221 @@
+<div class="uk-section uk-section-muted">
+    <div class="uk-container">
+        <header class="uk-flex uk-flex-column ux-flex-top uk-margin-small-bottom">
+            <h2 class="uk-text-normal">Outbound <span class="uk-text-light">ATL<span class="uk-text-primary" uk-icon="icon: arrow-right; ratio: 2"></span>AUS</span></h2>
+            <h3 class="uk-text-light uk-margin-remove">Saturday <span class="uk-text-primary uk-text-normal">Aug 23</span></h3>
+            <!-- <div class="uk-flex uk-flex-center">
+                <h2 class="uk-text-light uk-margin-right">Saturday <span class="uk-text-primary uk-text-normal">Aug 23</span></h2>
+                <div><a href="#"><span uk-icon="icon: settings"></span></a></div>
+            </div> -->
+        </header>
+
+        <!-- START FLIGHT INFO -->
+        <div class="uk-card uk-card-default uk-card-body uk-width-5-5 uk-flex uk-flex-between uk-padding-remove uk-margin-bottom">
+            <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div>
+            <div class="uk-width-2-5 uk-margin-small-top">
+                <div class="uk-padding uk-flex-column">
+                    <!-- Flight# and Duration -->
+                    <div class="uk-flex uk-flex-between uk-margin">
+                        <div>
+                            <p class="uk-text-primary uk-text-small uk-margin-remove">DL2442</p>
+                        </div>
+                        <div>
+                            <p class="uk-text-small uk-margin-remove">2h 18m</p>
+                        </div>
+                    </div>
+
+                    <!-- Departure & Arrival Times -->
+                    <div class="uk-flex uk-flex-between uk-margin">
+                        <div>
+                            <h2 class="uk-text-light">8:15am</h2>
+                        </div>
+                        <div>
+                            <i class="material-icons airplane uk-text-secondary">airplanemode_active</i>
+                        </div>
+                        
+                        <div>
+                            <h2 class="uk-text-light ">9:33am</h2>
+                        </div>
+                    </div>
+
+                    <!-- Border Thingie -->
+                    <div class="mf-flight-border"></div>
+
+                    <!-- City / Nonstop Thingies -->
+                    <div class="uk-flex uk-flex-between uk-margin-small-top">
+                        <div class="uk-flex uk-flex-column uk-flex-top">
+                            <small class="uk-text-left uk-text-bold uk-text-secondary">ATL</small>
+                            <small class="uk-text-left">Atlanta, GA</small>
+                        </div>
+                        <div class="uk-flex uk-flex-column uk-flex-top">
+                            <small class="uk-text-muted">Nonstop</small>
+                            <br/>
+                        </div>
+                        <div class="uk-flex uk-flex-column uk-flex-top">
+                            <small class="uk-text-bold uk-text-secondary uk-text-right" style="margin-left: auto">AUS</small>
+                            <small class="uk-text-right">Austin, TX</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details / Seats / Amenities -->
+                <div class="uk-flex uk-flex-between uk-card-footer mf">
+                    <div class="uk-flex uk-flex-between">
+                        <button class="uk-button mf uk-button-default uk-button-small">Seats</button>
+                    </div>
+
+                    <div class="uk-flex uk-flex-between">
+                        <div uk-tooltip="title: On-Flight Wi-Fi; pos: bottom"><i class="material-icons mf wifi uk-text-primary">wifi</i></div>
+                                <div uk-tooltip="title: Charging Ports; pos: bottom"><i class="material-icons mf electrical_services uk-text-primary">electrical_services</i></div>
+                                <div uk-tooltip="title: USB Connections; pos: bottom"><i class="material-icons mf usb uk-text-primary">usb</i></div>
+                                <div uk-tooltip="title: Seatback Entertainment Screens; pos: bottom"><i class="material-icons mf tv uk-text-primary">tv</i></div>
+                                <div uk-tooltip="title: In-Flight Entertainment; pos: bottom"><i class="material-icons mf movie uk-text-primary">movie</i></div>
+                                <div uk-tooltip="title: No Meals Provided; pos: bottom"><i class="material-icons mf no_meals uk-text-primary">no_meals</i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-width-1-5 mf-class-options uk-padding uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
+                <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Economy</p>
+                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
+                <h3 class="uk-text-center mf-price uk-margin-remove">107</h3>
+                <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
+                <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
+                <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/select-seat'">Select</button>
+            </div>
+            <div class="uk-width-1-5 mf-class-options uk-padding comfort uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
+                <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Comfort+</p>
+                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
+                <h3 class="uk-text-center mf-price uk-margin-remove">327</h3>
+                <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
+                <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
+                <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/select-seat'">Select</button>
+            </div>
+            <div class="uk-width-1-5 mf-class-options uk-padding first uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
+                <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">First</p>
+                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
+                <h3 class="uk-text-center mf-price uk-margin-remove">568</h3>
+                <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
+                <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
+                <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/select-seat'">Select</button>
+            </div>
+        </div>
+        <!-- END FLIGHT INFO -->
+
+        <!-- START FLIGHT INFO -->
+        <div class="uk-card uk-card-default uk-card-body uk-width-5-5 uk-flex uk-flex-between uk-padding-remove uk-margin-bottom">
+            <!-- <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div> -->
+            <div class="uk-width-2-5 uk-margin-small-top">
+                <div class="uk-padding uk-flex-column">
+                    <!-- Flight# and Duration -->
+                    <div class="uk-flex uk-flex-between uk-margin">
+                        <div>
+                            <p class="uk-text-primary uk-text-small uk-margin-remove">DL2442</p>
+                        </div>
+                        <div>
+                            <p class="uk-text-small uk-margin-remove">2h 18m</p>
+                        </div>
+                    </div>
+
+                    <!-- Departure & Arrival Times -->
+                    <div class="uk-flex uk-flex-between uk-margin">
+                        <div>
+                            <h2 class="uk-text-light">8:15am</h2>
+                        </div>
+                        <div>
+                            <i class="material-icons airplane uk-text-secondary">airplanemode_active</i>
+                        </div>
+                        
+                        <div>
+                            <h2 class="uk-text-light ">9:33am</h2>
+                        </div>
+                    </div>
+
+                    <!-- Border Thingie -->
+                    <div class="mf-flight-border"></div>
+
+                    <!-- City / Nonstop Thingies -->
+                    <div class="uk-flex uk-flex-between uk-margin-small-top">
+                        <div class="uk-flex uk-flex-column uk-flex-top">
+                            <small class="uk-text-left uk-text-bold uk-text-secondary">ATL</small>
+                            <small class="uk-text-left">Atlanta, GA</small>
+                        </div>
+                        <div class="uk-flex uk-flex-column uk-flex-top">
+                            <small class="uk-text-muted">Nonstop</small>
+                            <br/>
+                        </div>
+                        <div class="uk-flex uk-flex-column uk-flex-top">
+                            <small class="uk-text-bold uk-text-secondary uk-text-right" style="margin-left: auto">AUS</small>
+                            <small class="uk-text-right">Austin, TX</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details / Seats / Amenities -->
+                <div class="uk-flex uk-flex-between uk-card-footer mf">
+                    <div class="uk-flex uk-flex-between">
+                        <button class="uk-button mf uk-button-default uk-button-small">Seats</button>
+                    </div>
+
+                    <div class="uk-flex uk-flex-between">
+                        <div uk-tooltip="title: On-Flight Wi-Fi; pos: bottom"><i class="material-icons mf wifi uk-text-primary">wifi</i></div>
+                                <div uk-tooltip="title: Charging Ports; pos: bottom"><i class="material-icons mf electrical_services uk-text-primary">electrical_services</i></div>
+                                <div uk-tooltip="title: USB Connections; pos: bottom"><i class="material-icons mf usb uk-text-primary">usb</i></div>
+                                <div uk-tooltip="title: Seatback Entertainment Screens; pos: bottom"><i class="material-icons mf tv uk-text-primary">tv</i></div>
+                                <div uk-tooltip="title: In-Flight Entertainment; pos: bottom"><i class="material-icons mf movie uk-text-primary">movie</i></div>
+                                <div uk-tooltip="title: No Meals Provided; pos: bottom"><i class="material-icons mf no_meals uk-text-primary">no_meals</i></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-width-1-5 mf-class-options uk-padding uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
+                <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Economy</p>
+                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
+                <h3 class="uk-text-center mf-price uk-margin-remove">118</h3>
+                <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
+                <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
+                <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/select-seat'">Select</button>
+            </div>
+            <div class="uk-width-1-5 mf-class-options uk-padding comfort uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
+                <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Comfort+</p>
+                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
+                <h3 class="uk-text-center mf-price uk-margin-remove">356</h3>
+                <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
+                <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
+                <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/select-seat'">Select</button>
+            </div>
+            <div class="uk-width-1-5 mf-class-options uk-padding first uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-flex-space-around">
+                <p class="uk-text-center uk-text-muted uk-margin-small">Unavailable</p>
+            </div>
+        </div>
+        <!-- END FLIGHT INFO -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</div>
