@@ -1,13 +1,110 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="stylesheets/style.css">
-  <title><%= title %></title>
-</head>
+<%- include("head.ejs") %> 
 <body>
-  <h1><%= title %></h1>
+  
+  <div class="uk-cover-container uk-container-expand " uk-height-viewport="expand: true">
+    <img src="../img/background.jpeg" alt="" uk-cover>
+
+    <%- include("flights/partials/header.ejs") %>
+
+    <div class="uk-flex uk-flex-center uk-flex-middle" uk-height-viewport="expand: true">
+      <div class="uk-card uk-card-default uk-card-body uk-width-5-6">
+        <form class="uk-form uk-flex uk-flex-row uk-flex-between uk-flex-center">
+
+          <a class="mf-airport-modal-button" uk-toggle="target: #from" href="#">
+            <div class="uk-margin-small-top">
+              <h3 class="uk-card-title uk-margin-remove uk-padding-top uk-text-center">From</h3>
+              <p class="uk-text-meta uk-margin-remove uk-text-center">Origin</p>
+            </div>
+          </a>
+
+          <div class="uk-margin-small-top uk-text-primary">
+            <span uk-icon="icon: arrow-right; ratio: 2.5"></span>
+          </div>
+
+          <a class="mf-airport-modal-button" uk-toggle="target: #to"  href="#">
+            <div class="uk-margin-small-top">
+              <h3 class="uk-card-title uk-margin-remove uk-padding-top uk-text-center">To</h3>
+              <p class="uk-text-meta uk-margin-remove uk-text-center">Destination</p>
+            </div>
+          </a>
+
+
+          <div class="uk-margin">
+            <div uk-form-custom="target: > * > span:first-child" >
+                <select>
+                    <option value="round-trip">Round Trip</option>
+                    <option value="one-way">One Way</option>
+                </select>
+                <button style="width: 140px; padding: 0px 5px" class="uk-button uk-button-default" type="button" tabindex="-1">
+                    <span></span>
+                    <span uk-icon="icon: chevron-down" class="uk-text-primary"></span>
+                </button>
+            </div>
+          </div>
+
+
+          <div class="uk-margin">
+            <div id="dates" class="uk-inline" style="border: 1px solid #e5e5e5">
+                <input style="border: none; width: 65px;" id="departure" name="start" class="uk-input uk-form-width-small" type="text" value="Aug 1">
+                <span uk-icon="minus" class="uk-text-primary"></span>
+                <span class="uk-form-icon uk-form-icon-flip uk-text-primary" uk-icon="icon: calendar"></span>
+                <input style="border: none; width: 95px;" id="return" name="end" class="uk-input uk-form-width-small" type="text" value="Aug 7">
+            </div>
+          </div>
+
+          <div class="uk-margin">
+            <div uk-form-custom="target: > * > span:first-child" >
+                <select>
+                    <option value="1">1 Passenger</option>
+                    <option value="2">2 Passengers</option>
+                    <option value="3">3 Passengers</option>
+                    <option value="4">4 Passengers</option>
+                    <option value="5">5 Passengers</option>
+                    <option value="6">6 Passengers</option>
+                    <option value="7">7 Passengers</option>
+                    <option value="8">8 Passengers</option>
+                    <option value="9">9 Passengers</option>
+                </select>
+                <button style="width: 160px; padding: 0px 5px" class="uk-button uk-button-default" type="button" tabindex="-1">
+                    <span></span>
+                    <span uk-icon="icon: chevron-down" class="uk-text-primary"></span>
+                </button>
+              </div>
+          </div>
+
+          <div class="uk-margin">
+            <button style="padding: 0px 10px !important" class="uk-button uk-button-primary uk-padding-remove"><span uk-icon="arrow-right"></span></button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+<div id="from" class="uk-flex-top" uk-modal>
+  <div class="uk-modal-dialog uk-margin-auto-vertical uk-modal-body">
+      <h2 class="uk-modal-title"></h2>
+      <form>
+        <fieldset class="uk-fieldset">
+            <legend class="uk-legend">Departing From:</legend>
+            <div class="uk-margin">
+                <input class="uk-input" type="text" placeholder="Airport ID or City">
+            </div>
+      </form>
+  </div>
+</div>
+
+<div id="to" uk-modal>
+  <div class="uk-modal-dialog uk-margin-auto-vertical uk-modal-body">
+    <form>
+      <fieldset class="uk-fieldset">
+          <legend class="uk-legend">Arriving At:</legend>
+          <div class="uk-margin">
+              <input class="uk-input" type="text" placeholder="Airport ID or City">
+          </div>
+    </form>
+  </div>
+</div>
+
 </body>
 </html>

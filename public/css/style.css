@@ -1,0 +1,90 @@
+html {
+    background: #f8f8f8;
+}
+
+.uk-navbar-container:not(.uk-navbar-transparent) {
+    background: #FFF;
+}
+
+a.mf-airport-modal-button {
+    text-decoration: none;
+}
+
+.material-icons.airplane {
+    transform: rotate(90deg);
+    line-height: 40px;
+}
+
+.mf-class-options {
+    border-left: 1px solid #e8e8e8;
+}
+
+.mf-flight-border {
+    width: 100%;
+    height: 1px;
+    background: #333;
+    position: relative;
+}
+
+.mf-flight-border::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #333;
+    position: absolute;
+    top: -4px;
+}
+
+.mf-flight-border::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #333;
+    position: absolute;
+    right: 0;
+    top: -4px;
+}
+
+.mf.uk-card-footer {
+    background: #fcfcfc;
+    border: none;
+}
+
+.mf.uk-button-default {
+    padding: 0;
+    border: none;
+    font-weight: 600;
+    color: #1e87f0;
+    text-transform: initial;
+}
+
+.mf-spacer {
+    width: 1px;
+    display: inline-block;
+    height: 100%;
+    background: #e8e8e8;
+    margin: 0px 15px;
+}
+
+.mf.material-icons {
+    margin: 0px 5px;
+    font-size: 18px;
+}
+
+.mf-class-options.comfort {
+    border: 3px solid #1e87f0;
+}
+
+.mf-price {
+    color: #1e87f0;
+    position: relative;
+}
+
+.mf-price::before {
+    content: "$";
+    font-size: 14px;
+    position: relative;
+    top: -10px;
+}
