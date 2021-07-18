@@ -1,9 +1,14 @@
-<div class="uk-card uk-card-default uk-card-body uk-padding-remove uk-margin-bottom">
-    <div class="uk-card-header mf-summary-header">
-        <h3 class="uk-card-title"></h3>
+<div id="outbound-card" class="uk-card uk-card-default uk-card-body uk-padding-remove uk-margin-bottom" uk-toggle="target: #outbound-flight; animation: uk-animation-fade">
+    <div class="uk-card-header mf-summary-header uk-flex uk-flex-between uk-flex-middle">
+        <h4 class="uk-margin-remove mf-summary-title">Outbound</h4>
+        <p class="mf-summary-origin-destination"><small>DL2442</small><br />ATL <span uk-icon="icon: triangle-right; ratio: 0.7"></span> AUS</p>
+        <h4 class="uk-margin-remove mf-summary-date">Sat, Aug 14</h4>
+        <h4 class="uk-margin-remove mf-summary-time">8:15am - 9:33am</h4>
+        <p class="mf-summary-class"><small>Nonstop, 2h 18m</small><br/>First Class</p>
+        <span id="outbound-chevron" class="mf-summary-chevron uk-text-primary" uk-icon="icon: chevron-down; ratio: 1.5"></span>
     </div>
     <!-- <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div> -->
-    <div class="uk-margin-small-top uk-width-expand">
+    <div id="outbound-flight" class="uk-margin-small-top uk-width-expand" hidden>
         <div class="uk-padding uk-flex-column">
             <!-- Flight# and Duration -->
             <div class="uk-flex uk-flex-between uk-margin">
@@ -45,6 +50,87 @@
                 <div class="uk-flex uk-flex-column uk-flex-top">
                     <small class="uk-text-bold uk-text-secondary uk-text-right" style="margin-left: auto">AUS</small>
                     <small class="uk-text-right">Austin, TX</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details / Seats / Amenities -->
+        <div class="uk-flex uk-flex-between uk-card-footer mf">
+            <div class="uk-flex uk-flex-between">
+                <button class="uk-button mf uk-button-default uk-button-small">Seats</button>
+            </div>
+
+            <div class="uk-flex uk-flex-between">
+                <div uk-tooltip="title: On-Flight Wi-Fi; pos: bottom"><i class="material-icons mf wifi uk-text-primary">wifi</i></div>
+                        <div uk-tooltip="title: Charging Ports; pos: bottom"><i class="material-icons mf electrical_services uk-text-primary">electrical_services</i></div>
+                        <div uk-tooltip="title: USB Connections; pos: bottom"><i class="material-icons mf usb uk-text-primary">usb</i></div>
+                        <div uk-tooltip="title: Seatback Entertainment Screens; pos: bottom"><i class="material-icons mf tv uk-text-primary">tv</i></div>
+                        <div uk-tooltip="title: In-Flight Entertainment; pos: bottom"><i class="material-icons mf movie uk-text-primary">movie</i></div>
+                        <div uk-tooltip="title: No Meals Provided; pos: bottom"><i class="material-icons mf no_meals uk-text-primary">no_meals</i></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<div id="return-card" class="uk-card uk-card-default uk-card-body uk-padding-remove uk-margin-bottom" uk-toggle="target: #return-flight; animation: uk-animation-fade">
+    <div class="uk-card-header mf-summary-header uk-flex uk-flex-between uk-flex-middle">
+        <h4 class="uk-margin-remove mf-summary-title">Return</h4>
+        <p class="mf-summary-origin-destination"><small>DL1894</small><br />AUS <span uk-icon="icon: triangle-right; ratio: 0.7"></span> ATL</p>
+        <h4 class="mf-summary-date uk-margin-remove">Thur, Aug 19</h4>
+        <h4 class="mf-summary-time uk-margin-remove">11:47am - 12:55pm</h4>
+        <p class="mf-summary-class"><small>Nonstop, 2h 8m</small><br/>First Class</p>
+        <span id="return-chevron" class="mf-summary-chevron uk-text-primary" uk-icon="icon: chevron-down; ratio: 1.5"></span>
+    </div>
+    <!-- <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div> -->
+    <div id="return-flight" class="uk-margin-small-top uk-width-expand" hidden>
+        <div class="uk-padding uk-flex-column">
+            <!-- Flight# and Duration -->
+            <div class="uk-flex uk-flex-between uk-margin">
+                <div>
+                    <p class="uk-text-primary uk-text-small uk-margin-remove">DL1894 <span class="uk-text-muted mf-model">AIRBUS A321</span></p>
+                </div>
+                <div>
+                    <p class="uk-text-small uk-margin-remove">2h 8m</p>
+                </div>
+            </div>
+
+            <!-- Departure & Arrival Times -->
+            <div class="uk-flex uk-flex-between uk-margin">
+                <div>
+                    <h2 class="uk-text-light">11:47am</h2>
+                </div>
+                <div>
+                    <i class="material-icons airplane uk-text-secondary">airplanemode_active</i>
+                </div>
+                
+                <div>
+                    <h2 class="uk-text-light ">12:55pm</h2>
+                </div>
+            </div>
+
+            <!-- Border Thingie -->
+            <div class="mf-flight-border"></div>
+
+            <!-- City / Nonstop Thingies -->
+            <div class="uk-flex uk-flex-between uk-margin-small-top">
+                <div class="uk-flex uk-flex-column uk-flex-top">
+                    <small class="uk-text-left uk-text-bold uk-text-secondary">AUS</small>
+                    <small class="uk-text-left">Austin, TX</small>
+                </div>
+                <div class="uk-flex uk-flex-column uk-flex-top">
+                    <small class="uk-text-muted">Nonstop</small>
+                    <br/>
+                </div>
+                <div class="uk-flex uk-flex-column uk-flex-top">
+                    <small class="uk-text-bold uk-text-secondary uk-text-right" style="margin-left: auto">ATL</small>
+                    <small class="uk-text-right">Atlanta, GA</small>
                 </div>
             </div>
         </div>

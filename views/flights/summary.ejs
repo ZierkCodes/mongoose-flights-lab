@@ -3,13 +3,17 @@
     <%- include("partials/header.ejs") %>
     
     <div class="uk-section uk-section-muted">
-        <div class="uk-container uk-flex uk-flex-between">
+        <div class="uk-container uk-flex uk-flex-between uk-margin">
             <h2 class="uk-text-light">Trip Summary</h2>
             <%- include("partials/stepper.ejs") %>
         </div>
 
         <div class="uk-container">
             <%- include("partials/summary.ejs") %>
+        </div>
+
+        <div class="uk-container uk-flex uk-flex-right">
+            <button class="uk-button uk-button-primary uk-button-large" onclick="window.location.href='/flights/checkout'">Review and Pay</button>
         </div>
     </div>
 </body>

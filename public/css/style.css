@@ -338,4 +338,63 @@ a.mf-airport-modal-button {
 
 .mf-summary-header {
     border-left: 6px solid #1e87f0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.mf-summary-title,
+.mf-summary-origin-destination,
+.mf-summary-date,
+.mf-summary-class {
+    width: 120px;
+}
+
+.mf-summary-time {
+    width: 200px;
+}
+
+
+
+#outbound-card {
+    cursor: pointer;
+}
+
+.mf-select-seats {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.mf-payment-sections {
+    border: 3px solid #333;
+    border-radius: 500px;
+    width: 28px;
+    display: inline-block;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    position: relative;
+    top: -3px;
+    margin-right: 10px;
+}
+
+.mf-select {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.mf-select-span {
+    margin: 0 10px;
+}
+
+.mf-select-span.mf-icon {
+    position: relative;
+    top: 9px;
+    color: #1e87f0;
+}
+
+.mf-small {
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 0px;
 }

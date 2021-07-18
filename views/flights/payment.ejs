@@ -1,5 +1,209 @@
 <%- include("../head.ejs") %> 
 <body>
     <%- include("partials/header.ejs") %>
+    
+    <div class="uk-section uk-section-muted">
+        <div class="uk-container uk-flex uk-flex-between uk-margin">
+            <h1 class="uk-text-light">Review and Pay</h1>
+            <%- include("partials/stepper.ejs") %>
+        </div>
+
+        <div class="uk-container">
+            <%- include("partials/summary.ejs") %>
+        </div>
+
+        <div class="uk-container uk-margin-medium">
+            <div class="uk-card uk-card-default">
+                <div class="uk-card-header">
+                    <h5 class="uk-text-bold"><i class="material-icons airline_seat_recline_normal">airline_seat_recline_normal</i> Select Seats</h5>
+                </div>
+                <div class="uk-card-body mf-select-seats">
+                    <!-- EMPTY STATE / NO SEATS SELECTED -->
+                    <!-- <div class="uk-flex uk-flex-between uk-flex-middle">
+                        <p class="uk-margin-remove">View a map of the plane and select your seats.</p>
+                        <button class="uk-button uk-button-default uk-button-large" onclick="window.location.href='/flights/select-seats'">Select Seats</button>
+                    </div> -->
+
+                    <!-- FILLED STATE / SEATS CHOSEN -->
+                    <div>
+                        <!-- For Each Loop -->
+                        <!-- Note: If index = 0 - don't include <hr> -->
+                        <div class="uk-flex uk-flex-between uk-flex-middle">
+                            <h4 class="uk-text-light uk-margin-remove">Passenger 1</h4>
+                            <h4 class="uk-text-light uk-margin-remove">3C, 5C</h4>
+                        </div>
+                        <!-- End For Each Loop-->
+                        <hr>
+                        <div class="uk-flex uk-flex-between uk-flex-middle">
+                            <h4 class="uk-text-light uk-margin-remove">Passenger 2</h4>
+                            <h4 class="uk-text-light uk-margin-remove">3D, 5D</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="uk-container uk-margin-large">
+            <h2><span class="mf-payment-sections">1</span>Passenger Info</h2>
+            <small>Please make sure your full name is entered exactly as it appears on your government-issued identification.</small>
+
+            
+            <!-- Loop for the amount of passengers -->
+            <div class="uk-card uk-card-default uk-margin">
+                <div class="uk-card-body">
+                    <p class="uk-margin-remove uk-text-bold">Passenger 1</p>
+                    <small>All fields required unless noted</small>
+
+                    <form class="mf-passenger-form uk-margin">
+                        <div class="mf-row uk-flex uk-flex-between uk-grid-small">
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="passenger-1-first-name">First Name</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="passenger-1-first-name" type="text" placeholder="First Name" required>
+                                </div>
+                            </div>
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="passenger-1-middle-name">Middle Name <small class="uk-text-muted">(optional)</small></label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="passenger-1-middle-name" type="text" placeholder="Middle Name">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="passenger-1-last-name">Last Name</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="passenger-1-last-name" type="text" placeholder="Last Name" required>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="mf-row uk-margin uk-flex uk-flex-between uk-grid-small">
+                            <!-- Dat of Birth-->
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label">Date of Birth</label>
+                                <div class="uk-grid-small uk-flex uk-flex-between">
+                                    <!-- MM -->
+                                    <div class="uk-form-controls uk-width-1-3@s">
+                                        <div class="mf-select" uk-form-custom="target: > * > span:first-child">
+                                            <select class="mf-select">
+                                                <option value="">MM</option>
+                                                <option value="1">01</option>
+                                                <option value="2">02</option>
+                                            </select>
+                                            <button class="uk-button uk-button-default mf-select" type="button" tabindex="-1">
+                                                <span class="uk-align-left mf-select-span"></span>
+                                                <span class="uk-align-right mf-select-span mf-icon" uk-icon="icon: chevron-down"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- DD -->
+                                    <div class="uk-form-controls uk-width-1-3@s">
+                                        <div class="mf-select" uk-form-custom="target: > * > span:first-child">
+                                            <select class="mf-select">
+                                                <option value="">DD</option>
+                                                <option value="1">01</option>
+                                                <option value="2">02</option>
+                                            </select>
+                                            <button class="uk-button uk-button-default mf-select" type="button" tabindex="-1">
+                                                <span class="uk-align-left mf-select-span"></span>
+                                                <span class="uk-align-right mf-select-span mf-icon" uk-icon="icon: chevron-down"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- YYYY -->
+                                    <div class="uk-form-controls uk-width-1-3@s">
+                                        <div class="mf-select" uk-form-custom="target: > * > span:first-child">
+                                            <select class="mf-select">
+                                                <option value="">YYYY</option>
+                                                <option value="1992">1992</option>
+                                                <option value="1993">1993</option>
+                                            </select>
+                                            <button class="uk-button uk-button-default mf-select" type="button" tabindex="-1">
+                                                <span class="uk-align-left mf-select-span"></span>
+                                                <span class="uk-align-right mf-select-span mf-icon" uk-icon="icon: chevron-down"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gender -->
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="passenger-1-middle-name">Gender</label>
+                                <div class="uk-form-controls">
+                                    <div class="mf-select" uk-form-custom="target: > * > span:first-child">
+                                        <select class="mf-select">
+                                            <option value="">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                        <button class="uk-button uk-button-default mf-select" type="button" tabindex="-1">
+                                            <span class="uk-align-left mf-select-span"></span>
+                                            <span class="uk-align-right mf-select-span mf-icon" uk-icon="icon: chevron-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="passenger-1-middle-name">Known Traveler Number <small class="uk-text-muted">(optional)</small></label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="passenger-1-middle-name" type="text" placeholder="Known Traveler Number">
+                                    <small class="mf-small">TSA Precheck, Global Entry, NEXUS, SENTRI</small>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- End Loop -->
+
+            <!-- CONTACT INFO - NOT IN LOOP - JUST ONE -->
+            <div class="uk-card uk-card-default uk-margin">
+                <div class="uk-card-body">
+                    <p class="uk-margin-remove uk-text-bold">Contact Info</p>
+                    <small>All fields required</small>
+
+                    <form class="mf-passenger-form uk-margin">
+                        <div class="mf-row uk-flex uk-flex-between uk-grid-small">
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="country-code">Country Code / Region</label>
+                                <div class="uk-form-controls">
+                                    <div class="mf-select" uk-form-custom="target: > * > span:first-child">
+                                        <select class="mf-select">
+                                            <option value="+1">United States (+1)</option>
+                                            <option value="+1">Canada (+1)</option>
+                                            <option value="+44">United Kingdom (+44)</option>
+                                        </select>
+                                        <button class="uk-button uk-button-default mf-select" type="button" tabindex="-1">
+                                            <span class="uk-align-left mf-select-span"></span>
+                                            <span class="uk-align-right mf-select-span mf-icon" uk-icon="icon: chevron-down"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="phone">Phone Number</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="phone" type="text" placeholder="Phone Number" pattern="^((\+)?[1-9]{1,2})?([-\s\.])?((\(\d{1,4}\))|\d{1,4})(([-\s\.])?[0-9]{1,12}){1,2}$">
+                                </div>
+                            </div>
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="email">Email Address</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="email" type="text" placeholder="Email" required>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- END CONTACT INFO -->
+            
+        </div>
+
+        <!-- <div class="uk-container uk-flex uk-flex-right">
+            <button class="uk-button uk-button-primary uk-button-large" onclick="window.location.href='/flights/checkout'">Review and Pay</button>
+        </div> -->
+    </div>
 </body>
 </html>

@@ -10,8 +10,8 @@ router.get('/summary', function(req, res, next) {
     res.render('flights/summary', {activePage: 'trip-summary'})
 })
 
-router.get('/review', function(req, res, next) {
-    res.render('flights/review', {activePage: 'review-and-pay'})
+router.get('/checkout', function(req, res, next) {
+    res.render('flights/payment', {activePage: 'review-and-pay'})
 })
 
 router.get('/confirmation', function(req, res, next) {
@@ -19,7 +19,7 @@ router.get('/confirmation', function(req, res, next) {
 })
 
 // GET Seating chart
-router.get('/select-seat', function(req, res) {
+router.get('/select-seats', function(req, res) {
 
 let plane_chart = {
     sections: {
