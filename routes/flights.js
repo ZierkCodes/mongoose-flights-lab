@@ -6,6 +6,18 @@ router.get('/', function(req, res, next) {
   res.render('flights/flights.ejs')
 })
 
+router.get('/summary', function(req, res, next) {
+    res.render('flights/summary', {activePage: 'trip-summary'})
+})
+
+router.get('/review', function(req, res, next) {
+    res.render('flights/review', {activePage: 'review-and-pay'})
+})
+
+router.get('/confirmation', function(req, res, next) {
+    res.render('flights/confirmation', {activePage: 'confirmation'})
+})
+
 // GET Seating chart
 router.get('/select-seat', function(req, res) {
 

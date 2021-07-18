@@ -1,0 +1,76 @@
+
+<!-- <div class="mf-stepper uk-text-nowrap uk-text-light">
+    <div>
+        <p class="text uk-">Trip Summary</p>
+    </div>
+    <div>
+        <p class="text">Review & Pay</p>
+    </div>
+    <div>
+        <p class="text">Confirmation</p>
+    </div>
+    <div class="middle-thing"></div>
+</div> -->
+
+<div class="mf-stepper uk-width-1-4">
+    <div class="mf-steps uk-flex uk-flex-between">
+        <% if(activePage === 'trip-summary') { %>
+        <div class="mf-step active">
+            <span>1</span>
+            <div class="mf-label">
+                <span>Trip Summary</span>
+            </div>
+        </div>
+        <div class="mf-step">
+            <span>2</span>
+            <div class="mf-label">
+                <span>Review & Pay</span>
+            </div>
+        </div>
+        <div class="mf-step">
+            <span>3</span>
+            <div class="mf-label">
+                <span>Confirmation</span>
+            </div>
+        </div>
+        <% } else if(activePage === 'review-and-pay') { %>
+            <div class="mf-step complete">
+                <span uk-icon="check"></span>
+                <div class="mf-label">
+                    <span>Trip Summary</span>
+                </div>
+            </div>
+            <div class="mf-step active">
+                <span>2</span>
+                <div class="mf-label">
+                    <span>Review & Pay</span>
+                </div>
+            </div>
+            <div class="mf-step">
+                <span>3</span>
+                <div class="mf-label">
+                    <span>Confirmation</span>
+                </div>
+            </div>
+        <% } else if(activePage === 'confirmation') { %>
+            <div class="mf-step complete">
+                <span uk-icon="check"></span>
+                <div class="mf-label">
+                    <span>Trip Summary</span>
+                </div>
+            </div>
+            <div class="mf-step complete">
+                <span uk-icon="check"></span>
+                <div class="mf-label">
+                    <span>Review & Pay</span>
+                </div>
+            </div>
+            <div class="mf-step active">
+                <span>3</span>
+                <div class="mf-label">
+                    <span>Confirmation</span>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

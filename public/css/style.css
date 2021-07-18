@@ -51,6 +51,107 @@ a.mf-airport-modal-button {
     top: -4px;
 }
 
+.mf-stepper {
+    margin-top: 8px;
+    margin-right: 30px;
+}
+
+.mf-steps {
+    position: relative;
+    width: 100%;
+}
+
+.mf-steps::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #333;
+    top: 50%;
+    z-index: 1;
+}
+
+.mf-step {
+    background: #f8f8f8;
+    border: 1px solid #333;
+    color: #333;
+    width: 16px;
+    height: auto;
+    text-align: center;
+    padding: 2px;
+    position: relative;
+    z-index: 100;
+    font-size: 10px;
+}
+
+.mf-step.active,
+.mf-step.complete {
+    background: #333;
+    color: #fff;
+}
+
+.mf-label {
+    position: absolute;
+    z-index: 100;
+    color: #333;
+    width: 120px;
+    text-align: center;
+    top: 25px;
+    left: -48px;
+    font-size: 12px;
+}
+
+.mf-step.active .mf-label {
+    font-weight: 700;
+}
+/* 
+.mf-stepper {
+    width: 30%;
+    height: 1px;
+    background: #333;
+    position: relative;
+    left: 100px;
+    font-size: 10px;
+    margin-top: 50px;
+}
+
+.mf-stepper::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: #1e87f0;
+    position: absolute;
+    top: -4px;
+}
+
+.mf-stepper .middle-thing {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: #333;
+    position: absolute;
+    top: -4px;
+    left: 50%;
+}
+
+.mf-stepper::after {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: #333;
+    position: absolute;
+    right: 0;
+    top: -4px;
+} */
+
+.mf-model {
+    margin-left: 10px;
+}
+
 .mf.uk-card-footer {
     background: #fcfcfc;
     border: none;
@@ -233,4 +334,8 @@ a.mf-airport-modal-button {
     height: 100%;
     overflow: hidden;
     position: relative;
+}
+
+.mf-summary-header {
+    border-left: 6px solid #1e87f0;
 }

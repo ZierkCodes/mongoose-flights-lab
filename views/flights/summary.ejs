@@ -1,5 +1,16 @@
 <%- include("../head.ejs") %> 
 <body>
     <%- include("partials/header.ejs") %>
+    
+    <div class="uk-section uk-section-muted">
+        <div class="uk-container uk-flex uk-flex-between">
+            <h2 class="uk-text-light">Trip Summary</h2>
+            <%- include("partials/stepper.ejs") %>
+        </div>
+
+        <div class="uk-container">
+            <%- include("partials/summary.ejs") %>
+        </div>
+    </div>
 </body>
 </html>

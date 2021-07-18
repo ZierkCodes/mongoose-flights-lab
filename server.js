@@ -7,7 +7,7 @@ import logger from 'morgan'
 
 import { router as indexRouter } from './routes/index.js'
 import { router as usersRouter } from './routes/users.js'
-import { router as flightsRouter } from './routes/search.js'
+import { router as flightsRouter } from './routes/flights.js'
 import { router as summaryRouter } from './routes/summary.js'
 import { router as checkoutRouter } from './routes/checkout.js'
 
@@ -25,8 +25,7 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(
-  express.static(
+app.use(express.static(
     path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
   )
 )
