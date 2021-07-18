@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+@font-face {
+    font-family: 'Barcode';
+    src: url('../fonts/Free3of9.eot');
+    src: url('../fonts/Free3of9.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Free3of9.woff2') format('woff2'),
+        url('../fonts/Free3of9.woff') format('woff'),
+        url('../fonts/Free3of9.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
 html {
     background: #f8f8f8;
 }
@@ -355,7 +371,8 @@ a.mf-airport-modal-button {
 
 
 
-#outbound-card {
+#outbound-card,
+#return-card {
     cursor: pointer;
 }
 
@@ -397,4 +414,89 @@ a.mf-airport-modal-button {
     font-size: 12px;
     font-style: italic;
     margin-top: 0px;
+}
+
+.fab {
+    color: #1e87f0;
+}
+
+.mf-ticket {
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+    border-radius: 8px;
+    border: 1px solid #e3e3e3;
+    box-shadow: 0px 2px 15px 1px rgba(0,0,0,0.08);
+}
+
+.mf-ticket p {
+    margin: 0;
+    
+}
+
+.mf-ticket {
+    background: #FFF;
+}
+
+.mf-ticket-header {
+    padding: 10px 30px;
+}
+
+.mf-ticket-secondary .mf-ticket-header {
+    background: #f6f6f6;
+    border-top-right-radius: 8px;
+}
+
+.mf-ticket-primary .mf-ticket-header {
+    background: #f6f6f6;
+    border-top-left-radius: 8px;
+}
+
+.mf-ticket-header p {
+    font-size: 14px;
+}
+
+.mf-ticket-header .mf-ticket-small  {
+    font-size: 12px;
+}
+
+.mf-ticket-body {
+    padding: 30px;
+}
+
+.uk-alert-success {
+    border: 2px solid #32d296;
+}
+
+.mf-ticket-small {
+    font-size: 12px;
+}
+
+.mf-ticket-secondary {
+    border-left: 1px solid #eeeeee;
+}
+
+.mf-ticket-body .mf-ticket-small {
+    font-size: 12px;
+}
+
+.mf-ticket-body p {
+    font-size: 16px;
+}
+
+.mf-ticket-body .mf-ticket-large {
+    font-size: 36px;
+}
+
+.mf-ticket-body .mf-ticket-medium {
+    font-size: 16px;
+}
+
+.mf-barcode {
+    font-family: 'Barcode';
+    font-size: 36px !important;
+    transform: scale(1,1.5);
+}
+
+.mf-ticket-flight-information {
+    margin-bottom: 0;
 }

@@ -1,5 +1,7 @@
 import { DateRangePicker } from '../js/node_modules/vanillajs-datepicker/js/main.js'
 
+
+
 const elem = document.getElementById('dates');
 if(elem) {
   const rangepicker = new DateRangePicker(elem, {

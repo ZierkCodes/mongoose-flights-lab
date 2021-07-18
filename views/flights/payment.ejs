@@ -19,26 +19,26 @@
                 </div>
                 <div class="uk-card-body mf-select-seats">
                     <!-- EMPTY STATE / NO SEATS SELECTED -->
-                    <!-- <div class="uk-flex uk-flex-between uk-flex-middle">
+                    <div class="uk-flex uk-flex-between uk-flex-middle">
                         <p class="uk-margin-remove">View a map of the plane and select your seats.</p>
                         <button class="uk-button uk-button-default uk-button-large" onclick="window.location.href='/flights/select-seats'">Select Seats</button>
-                    </div> -->
+                    </div>
 
                     <!-- FILLED STATE / SEATS CHOSEN -->
-                    <div>
+                    <!-- <div> -->
                         <!-- For Each Loop -->
                         <!-- Note: If index = 0 - don't include <hr> -->
-                        <div class="uk-flex uk-flex-between uk-flex-middle">
+                        <!-- <div class="uk-flex uk-flex-between uk-flex-middle">
                             <h4 class="uk-text-light uk-margin-remove">Passenger 1</h4>
                             <h4 class="uk-text-light uk-margin-remove">3C, 5C</h4>
-                        </div>
+                        </div> -->
                         <!-- End For Each Loop-->
-                        <hr>
+                        <!-- <hr>
                         <div class="uk-flex uk-flex-between uk-flex-middle">
                             <h4 class="uk-text-light uk-margin-remove">Passenger 2</h4>
                             <h4 class="uk-text-light uk-margin-remove">3D, 5D</h4>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -200,10 +200,110 @@
             <!-- END CONTACT INFO -->
             
         </div>
+        <!-- END PASSENGER INFO -->
 
-        <!-- <div class="uk-container uk-flex uk-flex-right">
-            <button class="uk-button uk-button-primary uk-button-large" onclick="window.location.href='/flights/checkout'">Review and Pay</button>
-        </div> -->
+
+        <!-- START PAYMENT INFO -->
+        <div class="uk-container uk-margin-large">
+            <h2><span class="mf-payment-sections">2</span>Payment</h2>
+
+            <div class="uk-card uk-card-default uk-margin">
+                <div class="uk-card-header uk-flex uk-flex-between uk-flex-middle">
+                    <h5 class="uk-text-bold uk-margin-remove">Credit / Debit Card</h5>
+                    <div>
+                        <i class="fab fa-cc-visa fa-2x"></i>
+                        <i class="fab fa-cc-mastercard fa-2x"></i>
+                        <i class="fab fa-cc-discover fa-2x"></i>
+                        <i class="fab fa-cc-amex fa-2x"></i>
+                    </div>
+                </div>
+                <div class="uk-card-body">
+                    <form class="mf-passenger-form">
+                        <div class="mf-row uk-flex uk-flex-between uk-grid-small">
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="card-number">Card Number</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="card-number" type="text" placeholder="Card Number" required>
+                                </div>
+                            </div>
+                            <div class="uk-width-1-3@s uk-grid-small uk-flex uk-flex-between">
+                                <div class="uk-width-1-2@s">
+                                    <label class="uk-form-label" for="exp-date">Expiration Date</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="exp-date" type="text" placeholder="MM/YY" required>
+                                    </div>
+                                </div>
+                                <div class="uk-width-1-2@s">
+                                    <label class="uk-form-label" for="cvv">Security Code</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="cvv" type="text" placeholder="CVV" required>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="uk-width-1-3@s">
+                                <label class="uk-form-label" for="name-on-card">Name on Card</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="name-on-card" type="text" placeholder="Name on Card" required>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- REVIEW PURCHASE -->
+        <div class="uk-container uk-margin-large">
+            <h2><span class="mf-payment-sections">3</span>Review Purchase</h2>
+            <div class="uk-card uk-card-default uk-margin">
+                <div class="uk-card-body">
+                    <div class="uk-width-1-2 uk-margin-bottom">
+                        <p class="uk-margin-remove uk-text-bold">Selected Tickets</p>
+                        <small>2 Passengers</small>
+                    </div>
+                    
+
+                    <div class="uk-width-2-2">
+                        <div class="uk-flex uk-flex-between uk-flex-middle uk-margin">
+                            <h5 class="uk-text-light uk-margin-remove uk-width-1-4">Outbound Flight</h5>
+                            <h5 class="uk-text-light uk-margin-remove uk-width-1-4">2 Passengers</h5>
+                            <h5 class="uk-text-light uk-margin-remove uk-width-1-4">$578.45 <span class="uk-text-muted">x2</span></h5>
+                            <h3 class="uk-margin-remove uk-width-1-4 uk-text-right">$1,156.90</h3>
+                        </div>
+                        <hr>
+                        <div class="uk-flex uk-flex-between uk-flex-middle uk-margin">
+                            <h5 class="uk-text-light uk-margin-remove uk-width-1-4">Return Flight</h5>
+                            <h5 class="uk-text-light uk-margin-remove uk-width-1-4">2 Passengers</h5>
+                            <h5 class="uk-text-light uk-margin-remove uk-width-1-4">$578.45 <span class="uk-text-muted">x2</span></h5>
+                            <h3 class="uk-margin-remove uk-width-1-4 uk-text-right">$1,156.90</h3>
+                        </div>
+                        <hr>
+                        <div class="uk-flex uk-flex-between uk-flex-middle uk-margin">
+                            <!-- <h3 class="uk-text-primary uk-margin-remove uk-width-4-4 uk-text-right"><small class="uk-text-secondary uk-text-small uk-text-bold uk-margin-right">TOTAL</small>$2,313.80</h3> -->
+                                <div>
+                                    <h4 class="uk-text-light uk-margin-remove">Amount Due</h4>
+                                    <small class="uk-text-muted uk-margin-remove">(2 Passengers)</small>
+                                </div>
+                                <div class="uk-margin-left">
+                                    <h2 class="uk-text-primary uk-margin-remove">$2,313.80</h2>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="uk-container uk-margin uk-flex uk-flex-right">
+                        
+                <button class="uk-button uk-button-primary uk-button-large uk-margin-left" onclick="window.location.href='/flights/confirmation'">Complete Purchase</button>
+            </div>
+        </div>
+
+
     </div>
 </body>
 </html>
