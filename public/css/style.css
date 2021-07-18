@@ -340,9 +340,14 @@ a.mf-airport-modal-button {
 }
 
 .mf-plane-icon {
+    border: 1px solid #FF0000;
     position: absolute;
-    left: -1555px;
-    top: 1050px;
+    /* left: -1555px;
+    top: 1050px; */
+    top: 50%;
+    left: 50%;
+    /* margin-top: -2000px; */
+    margin-left: -2275px;
     z-index: 0;
 }
 
