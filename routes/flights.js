@@ -20,6 +20,8 @@ router.get('/confirmation', function(req, res, next) {
 
 // GET Seating chart
 router.get('/select-seats', function(req, res) {
+console.log(req.params.class);
+let classSelected = req.query.class;
 
 let plane_chart = {
     sections: {
@@ -29,7 +31,7 @@ let plane_chart = {
             rows: [
                 [{
                     letter: 'A',
-                    available: true,
+                    available: false,
                     exit: false
                 }, {
                     letter: 'C',
@@ -60,7 +62,7 @@ let plane_chart = {
                     isle: true
                 }, {
                     letter: 'D',
-                    available: true,
+                    available: false,
                     exit: false
 
                 }, {
@@ -80,11 +82,11 @@ let plane_chart = {
                     exit: true
                 }, {
                     letter: 'B',
-                    available: true,
+                    available: false,
                     exit: true
                 }, {
                     letter: 'C',
-                    available: true,
+                    available: false,
                     exit: true
                 }, {
                     isle: true
@@ -144,7 +146,7 @@ let plane_chart = {
                     isle: true
                 }, {
                     letter: 'D',
-                    available: true,
+                    available: false,
                     exit: false
                 }, {
                     letter: 'E',
@@ -266,7 +268,7 @@ let plane_chart = {
                     exit: false
                 }, {
                     letter: 'F',
-                    available: true,
+                    available: false,
                     exit: false
                 }],
                 [{
@@ -329,7 +331,7 @@ let plane_chart = {
                     exit: false
                 }, {
                     letter: 'B',
-                    available: true,
+                    available: false,
                     exit: false
                 }, {
                     letter: 'C',
@@ -625,7 +627,7 @@ let plane_chart = {
     }
 }
  
-  res.render('flights/seats.ejs', {plane_chart})
+  res.render('flights/seats.ejs', {plane_chart, classSelected})
 })
 
 export { 

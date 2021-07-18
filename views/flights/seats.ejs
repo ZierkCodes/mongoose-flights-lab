@@ -1,11 +1,16 @@
 <%- include("../head.ejs") %> 
 <body>
+    <span id='express-data' hidden>
+        <%= classSelected %>
+    </span>
+    
     <%- include("partials/header.ejs") %>
 
     <div class="uk-section uk-section-muted uk-padding-remove mf-container">
         <div class="uk-container uk-flex uk-flex-between">
 
             <div class="mf-plane-seating uk-width-2-5">
+
                 <!-- FIRST CLASS SECTION -->
                 <div class="mf-first-class">
                     <div><p class="uk-text-center uk-text-light uk-text-large">First Class</p></div>
@@ -26,11 +31,11 @@
                                     <div class="mf-isle uk-flex uk-flex-middle uk-flex-center"><span><%= index + 1 %></span></div>
                                 <% } else { %>
                                     <% if(!seat.available) { %>
-                                        <div class="mf-seat first-class unavailable uk-flex uk-flex-middle uk-flex-center">
-                                            <span uk-icon="icon: close; ratio: 1.6"></span>
+                                        <div class="mf-seat first-class unavailable uk-flex uk-flex-middle uk-flex-center" data-available="false" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="first">
+                                            <span uk-icon="icon: user; ratio: 1.6"></span>
                                         </div>
                                     <% } else { %>
-                                        <div class="mf-seat first-class"></div>
+                                        <div class="mf-seat first-class uk-flex uk-flex-middle uk-flex-center" data-available="true"  data-seat=<%= `${seat.letter}${index + 1}` %> data-class="first"></div>
                                     <% } %>
                                 <% } %>
                                 
@@ -62,19 +67,19 @@
                                 <% } else { %>
                                     <% if(!seat.available) { %>
                                         <% if(seat.exit === true) { %>
-                                            <div class="mf-seat preferred unavailable uk-flex uk-flex-middle uk-flex-center mf-exit-seat">
-                                                <span uk-icon="icon: close; ratio: 1.3"></span>
+                                            <div class="mf-seat preferred unavailable uk-flex uk-flex-middle uk-flex-center mf-exit-seat" data-available="false" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="preferred">
+                                                <span uk-icon="icon: user; ratio: 1.3"></span>
                                             </div>
                                         <% } else { %>
-                                            <div class="mf-seat preferred unavailable uk-flex uk-flex-middle uk-flex-center">
-                                                <span uk-icon="icon: close; ratio: 1.3"></span>
+                                            <div class="mf-seat preferred unavailable uk-flex uk-flex-middle uk-flex-center" data-available="false" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="preferred">
+                                                <span uk-icon="icon: user; ratio: 1.3"></span>
                                             </div>
                                         <% } %>
                                     <% } else { %>
                                         <% if(seat.exit === true) { %>
-                                            <div class="mf-seat preferred uk-flex uk-flex-middle uk-flex-center mf-exit-seat"></div>
+                                            <div class="mf-seat preferred uk-flex uk-flex-middle uk-flex-center mf-exit-seat" data-available="true" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="preferred"></div>
                                         <% } else { %>
-                                            <div class="mf-seat preferred uk-flex uk-flex-middle uk-flex-center"></div>
+                                            <div class="mf-seat preferred uk-flex uk-flex-middle uk-flex-center" data-available="true" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="preferred"></div>
                                         <% } %>
                                     <% } %>
                                 <% } %>
@@ -107,19 +112,19 @@
                                 <% } else { %>
                                     <% if(!seat.available) { %>
                                         <% if(seat.exit === true) { %>
-                                            <div class="mf-seat economy unavailable uk-flex uk-flex-middle uk-flex-center mf-exit-seat">
-                                                <span uk-icon="icon: close; ratio: 1.3"></span>
+                                            <div class="mf-seat economy unavailable uk-flex uk-flex-middle uk-flex-center mf-exit-seat" data-available="false" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="economy">
+                                                <span uk-icon="icon: user; ratio: 1.3"></span>
                                             </div>
                                         <% } else { %>
-                                            <div class="mf-seat economy unavailable uk-flex uk-flex-middle uk-flex-center">
-                                                <span uk-icon="icon: close; ratio: 1.3"></span>
+                                            <div class="mf-seat economy unavailable uk-flex uk-flex-middle uk-flex-center" data-available="false" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="economy">
+                                                <span uk-icon="icon: user; ratio: 1.3"></span>
                                             </div>
                                         <% } %>
                                     <% } else { %>
                                         <% if(seat.exit === true) { %>
-                                            <div class="mf-seat economy uk-flex uk-flex-middle uk-flex-center mf-exit-seat"></div>
+                                            <div class="mf-seat economy uk-flex uk-flex-middle uk-flex-center mf-exit-seat" data-available="true" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="economy"></div>
                                         <% } else { %>
-                                            <div class="mf-seat economy uk-flex uk-flex-middle uk-flex-center"></div>
+                                            <div class="mf-seat economy uk-flex uk-flex-middle uk-flex-center" data-available="true" data-seat=<%= `${seat.letter}${index + 1}` %> data-class="economy"></div>
                                         <% } %>
                                     <% } %>
                                 <% } %>
@@ -132,7 +137,49 @@
             </div>
             <!-- START NAVIGATION -->
             <div class="uk-width-2-5">
-                <div class="uk-card uk-width-expand uk-card-default uk-card-body uk-position-fixed" style="z-index: 100; top: 200px;">Stick to the top but only after 200px scrolling</div>
+                <div class="uk-card uk-width-expand uk-card-default uk-card-body uk-position-fixed" style="z-index: 100; top: 200px;">
+                    <h4>Seat Key</h4>
+
+                    <div class="uk-flex">
+                        <div>
+                            <div class="uk-flex uk-flex-middle">
+                                <div class="mf-seat-key selected uk-flex uk-flex-center uk-flex-middle"><span>P1</span></div>
+                                <p class="uk-margin-remove">Selected Seat</p>
+                            </div>
+        
+                            <div class="uk-flex uk-flex-middle">
+                                <div class="mf-seat-key first"></div>
+                                <p class="uk-margin-remove">First Class</p>
+                            </div>
+        
+                            <div class="uk-flex uk-flex-middle">
+                                <div class="mf-seat-key preferred"></div>
+                                <p class="uk-margin-remove">Preferred Plus</p>
+                            </div>
+
+                            <div class="uk-flex uk-flex-middle">
+                                <div class="mf-seat-key economy"></div>
+                                <p class="uk-margin-remove">Economy</p>
+                            </div>
+                        </div>
+                        <div class="uk-margin-large-left">
+                            <div class="uk-flex uk-flex-middle">
+                                <div class="mf-seat-key exit"></div>
+                                <p class="uk-margin-remove">Exit Row</p>
+                            </div>
+                            
+                            <div class="uk-flex uk-flex-middle">
+                                <div class="mf-seat-key occupied uk-flex uk-flex-center uk-flex-middle"><span uk-icon="icon: user; ratio: 1"></span></div>
+                                <p class="uk-margin-remove">Occupied</p>
+                            </div>
+                            
+                            <div class="uk-flex uk-flex-middle">
+                                <div class="mf-seat-key unavailable uk-flex uk-flex-center uk-flex-middle"><span uk-icon="icon: close; ratio: 1"></span></div>
+                                <p class="uk-margin-remove">Unavailable</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -142,5 +189,29 @@
     </div>
 
 
+    <div class="uk-section-default uk-width-expand uk-position-fixed uk-position-bottom mf-seating-footer" style="z-index: 100;">
+        <div class="uk-container uk-padding-small uk-flex uk-flex-between">
+            <!-- UNSELECTED -->
+            <div class="uk-flex">
+                <div class="mf-seat-selection uk-flex uk-flex-middle uk-flex-around">
+                    <p class="uk-margin-remove uk-text-bold">–</p>
+                </div>
+                <div class="uk-margin-left uk-flex uk-flex-middle">
+                    <h3 class="uk-margin-remove uk-text-light">Passenger 2</h3>
+                </div>
+            </div>
+            
+            <div>
+                <button class="uk-button uk-button-primary uk-button-large">Next Flight</button>
+                <button class="uk-button uk-button-default uk-button-large">Save & Exit</button>
+            </div>
+            <!-- SELECTED -->
+            <!-- <div class="mf-seat-selection selected uk-flex uk-flex-middle uk-flex-around">
+                <p class="uk-margin-remove uk-text-bold">3D</p>
+            </div> -->
+        </div>
+        
+    </div>
+    
 </body>
 </html>

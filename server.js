@@ -1,9 +1,13 @@
+import dotenv from 'dotenv'
+import connectDB from './config/database.js' // DB connection
 import createError from 'http-errors'
 import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import cookieParser from 'cookie-parser'
 import logger from 'morgan'
+import('./config/database.js')
+import methodOverride from 'method-override'
 
 import { router as indexRouter } from './routes/index.js'
 import { router as usersRouter } from './routes/users.js'
@@ -11,6 +15,9 @@ import { router as flightsRouter } from './routes/flights.js'
 import { router as summaryRouter } from './routes/summary.js'
 import { router as checkoutRouter } from './routes/checkout.js'
 
+dotenv.config()
+const PORT = process.env.PORT || 5000
+const mode = process.env.NODE_ENV
 
 const app = express()
 

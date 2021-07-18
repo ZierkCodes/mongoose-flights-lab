@@ -235,6 +235,7 @@ a.mf-airport-modal-button {
     overflow: auto;
     position: relative;
     z-index: 100;
+    margin-bottom: 80px;
 }
 
 .mf-plane-row {
@@ -253,22 +254,71 @@ a.mf-airport-modal-button {
     padding-bottom: 10px;
 }
 
+.mf-seat-key {
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+}
+
+.mf-seat-key.selected {
+    background: #32d296;
+    border: 1px solid #32d296;
+    color: #FFF;
+}
+
+.mf-seat-key.first {
+    background: #1e87f0;
+    border: 1px solid #1e87f0;
+}
+
+.mf-seat-key.preferred {
+    background: #333;
+    border: 1px solid #333;
+}
+
+.mf-seat-key.economy {
+    background: #FFF;
+    border: 1px solid #333;
+}
+
+.mf-seat-key.occupied,
+.mf-seat-key.unavailable {
+    background: #F8F8F8;
+    border: 1px solid #e5e5e5;
+}
+
+.mf-seat-key.exit {
+    background: #f0506e;
+    border: 1px solid #f0506e;
+}
+
+.mf-seat {
+    cursor: pointer;
+}
+
 .mf-seat.first-class {
     width: 50px;
     height: 50px;
-    border: 1px solid #333;
-    background: #FFF;
+    border: 1px solid #1e87f0;
+    background: #1e87f0;
 }
 
 .mf-seat.preferred,
 .mf-seat.economy {
     width: 40px;
     height: 40px;
+    
+}
+
+.mf-seat.preferred {
+    border: 1px solid #333;
+    background: #333;
+}
+
+.mf-seat.economy {
     border: 1px solid #333;
     background: #FFF;
 }
-
-
 
 .mf-preferred-class .mf-isle,
 .mf-economy-class .mf-isle {
@@ -284,18 +334,21 @@ a.mf-airport-modal-button {
 .mf-exit-seat.mf-seat.first-class,
 .mf-exit-seat.mf-seat.preferred,
 .mf-exit-seat.mf-seat.economy {
-    background: #fef4f6;
-    color: #f0506e;
+    background: #f0506e;
+    color: #fff;
     border: 1px solid #f0506e
 }
 
-.mf-exit-seat.mf-seat.first-class.selected,
-.mf-exit-seat.mf-seat.preferred.selected,
-.mf-exit-seat.mf-seat.economy.selected {
-    background: #f0506e;
-    color: #f0506e;
-    border: 1px solid #f0506e
+.mf-seat.first-class.selected,
+.mf-seat.preferred.selected,
+.mf-seat.economy.selected,
+.mf-seat.mf-exit-seat.selected {
+    background: #32d296;
+    border: 1px solid #32d296;
+    color: #FFF;
+    font-weight: 700;
 }
+
 
 .mf-seat.first-class.unavailable,
 .mf-seat.preferred.unavailable,
@@ -303,15 +356,16 @@ a.mf-airport-modal-button {
     border: 1px solid #E5E5E5;
     background: #F8F8F8;
     color: #999;
+    cursor: not-allowed;
 }
 
-.mf-exit-seat.mf-seat.first-class.unavailable,
+/* .mf-exit-seat.mf-seat.first-class.unavailable,
 .mf-exit-seat.preferred.unavailable,
 .mf-exit-seat.economy.unavailable {
     border: 1px solid #f0506e;
     background: #fef4f6;
     color: #f0506e;
-}
+} */
 
 .mf-first-class .mf-plane-row .mf-letter {
     width: 50px;
@@ -326,11 +380,6 @@ a.mf-airport-modal-button {
     height: 40px;
     text-align: center;
     font-weight: 700;
-}
-
-.mf-seat.preferred {
-    border: 1px solid #1e87f0;
-    background: #d8eafc;
 }
 
 .mf-plane-icon .material-icons.airplane {
@@ -349,6 +398,23 @@ a.mf-airport-modal-button {
     /* margin-top: -2000px; */
     margin-left: -2275px;
     z-index: 0;
+}
+
+.mf-seating-footer {
+    border-top: 1px solid #1e87f0;
+}
+
+.mf-seat-selection {
+    background: #E5E5E5;
+    color: #333;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+.mf-seat-selection.selected {
+    background: #1e87f0;
+    color: #FFF;
 }
 
 .mf-container {
