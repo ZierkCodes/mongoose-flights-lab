@@ -7,6 +7,43 @@ if(dates) {
   }); 
 }
 
+/* Search */
+const searchFlightsBtn = document.querySelector('#search-flights')
+if(searchFlightsBtn) {
+  searchFlightsBtn.addEventListener('click', (e) => {
+    let origin_elem = document.querySelector('#origin')
+    let destination_elem = document.querySelector('#destination')
+    let passengers_elem = document.querySelector('#passengers')
+    let departure_date_elem = document.querySelector('#departure_date')
+    let return_date_elem = document.querySelector('#return_date')
+    let trip_type_elem = document.querySelector('#trip_type')
+
+    if(!origin_elem.value || !destination_elem.value || !passengers_elem.value || !departure_date_elem.value || !trip_type_elem.value) {
+      let error_elem = document.querySelector('#error-container')
+
+      let alert = document.createElement('div')
+      alert.classList.add('uk-alert-danger')
+      alert.setAttribute('uk-alert', '')
+      
+      let closeBtn = document.createElement('a')
+      closeBtn.classList.add('uk-alert-close')
+      closeBtn.setAttribute('uk-close', '')
+
+      let error = document.createElement('p')
+      error.innerHTML = '<b>ERROR:</b> Please enter all fields.'
+
+      alert.appendChild(closeBtn)
+      alert.appendChild(error)
+      error_elem.appendChild(alert)
+      
+      error_elem.removeAttribute('hidden')
+    } else {
+      // Create the Query String... fml
+      let url = `/flights?origin=${origin_elem.value}&destination=${destination_elem.value}&passengers=${passengers_elem.value}&trip_type=${trip_type_elem.value}&departure_date=${departure_date_elem.value}&return_date=${return_date_elem.value}`;
+      window.location.href = url;
+    }
+  })
+}
 
 
 /* Select Seats */

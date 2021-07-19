@@ -6,6 +6,11 @@
 
     <%- include("flights/partials/header.ejs") %>
 
+    <div id="error-container" class="uk-container uk-margin" hidden>
+      
+    </div>
+    
+
     <div class="uk-flex uk-flex-center uk-flex-middle" uk-height-viewport="expand: true">
       <div class="uk-card uk-card-default uk-card-body uk-width-5-6">
         <form class="uk-form uk-flex uk-flex-row uk-flex-between uk-flex-center">
@@ -31,7 +36,7 @@
 
           <div class="uk-margin">
             <div uk-form-custom="target: > * > span:first-child" >
-                <select>
+                <select id="trip_type">
                     <option value="round-trip">Round Trip</option>
                     <option value="one-way">One Way</option>
                 </select>
@@ -45,16 +50,16 @@
 
           <div class="uk-margin">
             <div id="dates" class="uk-inline" style="border: 1px solid #e5e5e5">
-                <input style="border: none; width: 65px;" id="departure" name="start" class="uk-input uk-form-width-small" type="text" value="Aug 1">
+                <input style="border: none; width: 65px;" id="departure_date" name="start" class="uk-input uk-form-width-small" type="text" value="Aug 1">
                 <span uk-icon="minus" class="uk-text-primary"></span>
                 <span class="uk-form-icon uk-form-icon-flip uk-text-primary" uk-icon="icon: calendar"></span>
-                <input style="border: none; width: 95px;" id="return" name="end" class="uk-input uk-form-width-small" type="text" value="Aug 7">
+                <input style="border: none; width: 95px;" id="return_date" name="end" class="uk-input uk-form-width-small" type="text" value="Aug 7">
             </div>
           </div>
 
           <div class="uk-margin">
             <div uk-form-custom="target: > * > span:first-child" >
-                <select>
+                <select id="passengers">
                     <option value="1">1 Passenger</option>
                     <option value="2">2 Passengers</option>
                     <option value="3">3 Passengers</option>
@@ -73,7 +78,7 @@
           </div>
 
           <div class="uk-margin">
-            <a class="uk-button uk-button-primary uk-padding-remove" style="padding: 0px 10px !important" href="/flights"><span uk-icon="arrow-right"></span></a>
+            <a id="search-flights" class="uk-button uk-button-primary uk-padding-remove" style="padding: 0px 10px !important"><span uk-icon="arrow-right"></span></a>
             <!-- <button type="button" style="padding: 0px 10px !important" class="uk-button uk-button-primary uk-padding-remove"><span uk-icon="arrow-right"></span></button> -->
           </div>
 
@@ -89,7 +94,7 @@
         <fieldset class="uk-fieldset">
             <legend class="uk-legend">Departing From:</legend>
             <div class="uk-margin">
-                <input class="uk-input" type="text" placeholder="Airport ID or City">
+                <input id="origin" class="uk-input" type="text" placeholder="Airport ID or City">
             </div>
       </form>
   </div>
@@ -101,7 +106,7 @@
       <fieldset class="uk-fieldset">
           <legend class="uk-legend">Arriving At:</legend>
           <div class="uk-margin">
-              <input class="uk-input" type="text" placeholder="Airport ID or City">
+              <input id="destination" class="uk-input" type="text" placeholder="Airport ID or City">
           </div>
     </form>
   </div>

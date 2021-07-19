@@ -1,10 +1,10 @@
 import { Router } from 'express'
 const router = Router()
 
-/* GET flights page. */
-router.get('/', function(req, res, next) {
-  res.render('flights/flights.ejs')
-})
+import * as flightController from '../controllers/flight.js'
+
+// res.render('flights/flights.ejs')
+
 
 router.get('/summary', function(req, res, next) {
     res.render('flights/summary', {activePage: 'trip-summary'})
@@ -17,6 +17,13 @@ router.get('/checkout', function(req, res, next) {
 router.get('/confirmation', function(req, res, next) {
     res.render('flights/confirmation', {activePage: 'confirmation'})
 })
+
+router.get('/', flightController.queryFlights)
+router.post('/create', flightController.createFlight)
+router.get('/all', flightController.getFlights)
+router.get('/:id', flightController.getFlight)
+
+// router.get()
 
 // GET Seating chart
 router.get('/select-seats', function(req, res) {
