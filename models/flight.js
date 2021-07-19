@@ -5,34 +5,32 @@ export { Flight }
 const Schema = mongoose.Schema
 
 const ticketSchema = new Schema({
-    flight_number: {
-        type: String,
-        required: true
-    },
     confirmation_number: {
         type: String,
-        required: true
+        default: ''
     },
     tracking_number: {
         type: String,
-        required: true
+        default: ''
     },
     data: {
         type: String,
-        required: true
+        default: ''
     },
     options: {
+        type: String,
+        default: ''
+    },
+    flight_class: {
         type: String,
         required: true
     },
     seat: {
         isle: {
             type: String,
-            required: true
         },
         number: {
             type: Number,
-            required: true
         }
     },
     boarding_zone: {
@@ -40,27 +38,15 @@ const ticketSchema = new Schema({
         required: true
     },
     price: {
-        first: {
-            type: Number,
-            required: true
-        },
-        preferred: {
-            type: Number,
-            required: true
-        },
-        economy: {
-            type: Number,
-            required: true
-        }
+        type: Number,
+        required: true
     },
     passenger: {
         first_name: {
             type: String,
-            required: true
         },
         last_name: {
             type: String,
-            required: true
         }
     }
 })

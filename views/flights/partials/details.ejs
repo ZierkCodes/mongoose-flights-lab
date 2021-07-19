@@ -1,8 +1,8 @@
 <div class="uk-section uk-section-muted">
     <div class="uk-container">
         <header class="uk-flex uk-flex-column ux-flex-top uk-margin-small-bottom">
-            <h2 class="uk-text-normal">Outbound <span class="uk-text-light">ATL<span class="uk-text-primary" uk-icon="icon: arrow-right; ratio: 2"></span>AUS</span></h2>
-            <h3 class="uk-text-light uk-margin-remove">Saturday <span class="uk-text-primary uk-text-normal">Aug 23</span></h3>
+            <h2 class="uk-text-normal"><%= query.flight_type %> <span class="uk-text-light"><%= query.origin %><span class="uk-text-primary" uk-icon="icon: arrow-right; ratio: 2"></span><%= query.destination %></span></h2>
+            <h3 class="uk-text-light uk-margin-remove">Saturday <span class="uk-text-primary uk-text-normal"><%= query.departure %></span></h3>
             <!-- <div class="uk-flex uk-flex-center">
                 <h2 class="uk-text-light uk-margin-right">Saturday <span class="uk-text-primary uk-text-normal">Aug 23</span></h2>
                 <div><a href="#"><span uk-icon="icon: settings"></span></a></div>
@@ -10,6 +10,9 @@
         </header>
 
         <!-- START FLIGHT INFO -->
+        <% data.forEach((flight) => { %>
+
+        
         <div class="uk-card uk-card-default uk-card-body uk-width-5-5 uk-flex uk-flex-between uk-padding-remove uk-margin-bottom">
             <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div>
             <div class="uk-width-2-5 uk-margin-small-top">
@@ -17,24 +20,43 @@
                     <!-- Flight# and Duration -->
                     <div class="uk-flex uk-flex-between uk-margin">
                         <div>
-                            <p class="uk-text-primary uk-text-small uk-margin-remove">DL2442 <span class="uk-text-muted mf-model">AIRBUS A321</span></p>
+                            <p class="uk-text-primary uk-text-small uk-margin-remove"><%= flight.number %> <span class="uk-text-muted mf-model"><%= flight.plane.name %></span></p>
                         </div>
                         <div>
-                            <p class="uk-text-small uk-margin-remove">2h 18m</p>
+                            <p class="uk-text-small uk-margin-remove"><%= flight.duration.hours %>h <%= flight.duration.minutes %>m</p>
                         </div>
                     </div>
 
                     <!-- Departure & Arrival Times -->
                     <div class="uk-flex uk-flex-between uk-margin">
                         <div>
-                            <h2 class="uk-text-light">8:15am</h2>
+                            <h2 class="uk-text-light">
+                                <% let hours = flight.departure.getHours() %>
+                                <% let minutes = flight.departure.getMinutes() %>
+                                <% if(minutes >= 60) { hours += Math.floor(minutes / 60); minutes = minutes % 60 } %>
+                                <% let ampm = hours >= 12 ? 'pm' : 'am' %>
+                                <% hours = hours % 12 %>
+                                <% hours = hours ? hours : 12 %>
+                                <% minutes = minutes < 10 ? '0'+minutes : minutes; %>
+                                
+                                <%= `${hours}:${minutes}${ampm}` %>
+                            </h2>
                         </div>
                         <div>
                             <i class="material-icons airplane uk-text-secondary">airplanemode_active</i>
                         </div>
                         
                         <div>
-                            <h2 class="uk-text-light ">9:33am</h2>
+                            <h2 class="uk-text-light ">
+                                <% hours = flight.departure.getHours() + flight.duration.hours %>
+                                <% minutes = flight.departure.getMinutes() + flight.duration.minutes %>
+                                <% if(minutes >= 60) { hours += Math.floor(minutes / 60); minutes = minutes % 60 } %>
+                                <% ampm = hours >= 12 ? 'pm' : 'am' %>
+                                <% hours = hours % 12 %>
+                                <% hours = hours ? hours : 12 %>
+                                <% minutes = minutes < 10 ? '0'+minutes : minutes; %>
+                                <%= `${hours}:${minutes}${ampm}` %>
+                            </h2>
                         </div>
                     </div>
 
@@ -44,16 +66,16 @@
                     <!-- City / Nonstop Thingies -->
                     <div class="uk-flex uk-flex-between uk-margin-small-top">
                         <div class="uk-flex uk-flex-column uk-flex-top">
-                            <small class="uk-text-left uk-text-bold uk-text-secondary">ATL</small>
-                            <small class="uk-text-left">Atlanta, GA</small>
+                            <small class="uk-text-left uk-text-bold uk-text-secondary"><%= flight.origin.code %></small>
+                            <small class="uk-text-left"><%= flight.origin.city %></small>
                         </div>
-                        <div class="uk-flex uk-flex-column uk-flex-top">
+                        <!-- <div class="uk-flex uk-flex-column uk-flex-top">
                             <small class="uk-text-muted">Nonstop</small>
                             <br/>
-                        </div>
+                        </div> -->
                         <div class="uk-flex uk-flex-column uk-flex-top">
-                            <small class="uk-text-bold uk-text-secondary uk-text-right" style="margin-left: auto">AUS</small>
-                            <small class="uk-text-right">Austin, TX</small>
+                            <small class="uk-text-bold uk-text-secondary uk-text-right" style="margin-left: auto"><%= flight.destination.code %></small>
+                            <small class="uk-text-right"><%= flight.destination.city %></small>
                         </div>
                     </div>
                 </div>
@@ -61,23 +83,34 @@
                 <!-- Details / Seats / Amenities -->
                 <div class="uk-flex uk-flex-between uk-card-footer mf">
                     <div class="uk-flex uk-flex-between">
-                        <button class="uk-button mf uk-button-default uk-button-small">Seats</button>
+                        <p class="uk-text-secondary uk-text-small uk-text-bold uk-margin-remove">Ammenities</p>
                     </div>
 
                     <div class="uk-flex uk-flex-between">
-                        <div uk-tooltip="title: On-Flight Wi-Fi; pos: bottom"><i class="material-icons mf wifi uk-text-primary">wifi</i></div>
-                                <div uk-tooltip="title: Charging Ports; pos: bottom"><i class="material-icons mf electrical_services uk-text-primary">electrical_services</i></div>
-                                <div uk-tooltip="title: USB Connections; pos: bottom"><i class="material-icons mf usb uk-text-primary">usb</i></div>
-                                <div uk-tooltip="title: Seatback Entertainment Screens; pos: bottom"><i class="material-icons mf tv uk-text-primary">tv</i></div>
-                                <div uk-tooltip="title: In-Flight Entertainment; pos: bottom"><i class="material-icons mf movie uk-text-primary">movie</i></div>
-                                <div uk-tooltip="title: No Meals Provided; pos: bottom"><i class="material-icons mf no_meals uk-text-primary">no_meals</i></div>
+                        <% if(flight.amenities.technology) { %>
+                            <div uk-tooltip="title: On-Flight Wi-Fi; pos: bottom"><i class="material-icons mf wifi uk-text-primary">wifi</i></div>
+                            <div uk-tooltip="title: Charging Ports; pos: bottom"><i class="material-icons mf electrical_services uk-text-primary">electrical_services</i></div>
+                            <div uk-tooltip="title: USB Connections; pos: bottom"><i class="material-icons mf usb uk-text-primary">usb</i></div>
+                        <% } %>
+
+                        <% if(flight.amenities.entertainment) { %>
+                            <div uk-tooltip="title: Seatback Entertainment Screens; pos: bottom"><i class="material-icons mf tv uk-text-primary">tv</i></div>
+                            <div uk-tooltip="title: In-Flight Entertainment; pos: bottom"><i class="material-icons mf movie uk-text-primary">movie</i></div>
+                        <% } %>
+
+                        <% if(flight.amenities.meals) { %>
+                            <div uk-tooltip="title: Meal or Snack Provided; pos: bottom"><i class="material-icons mf restaurant uk-text-primary">restaurant</i></div>
+                        <% } else { %>
+                            <div uk-tooltip="title: No Meals Provided; pos: bottom"><i class="material-icons mf no_meals uk-text-primary">no_meals</i></div>
+                        <% } %>
+                        
+                        <div uk-tooltip="title: Free Carry On; pos: bottom"><i class="material-icons mf luggage uk-text-primary">luggage</i></div>
                     </div>
                 </div>
             </div>
 
             <div class="uk-width-1-5 mf-class-options uk-padding uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
                 <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Economy<br /><i class="material-icons mf airline_seat_legroom_reduced uk-text-primary">airline_seat_legroom_reduced</i></p>
-                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
                 <h3 class="uk-text-center mf-price uk-margin-remove">107</h3>
                 <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
                 <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
@@ -85,7 +118,6 @@
             </div>
             <div class="uk-width-1-5 mf-class-options uk-padding comfort uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
                 <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Preferred+<br/><i class="material-icons mf airline_seat_legroom_normal uk-text-primary">airline_seat_legroom_normal</i></p>
-                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
                 <h3 class="uk-text-center mf-price uk-margin-remove">327</h3>
                 <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
                 <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
@@ -93,102 +125,19 @@
             </div>
             <div class="uk-width-1-5 mf-class-options uk-padding first uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
                 <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">First Class<br /><i class="material-icons mf airline_seat_legroom_extra uk-text-primary">airline_seat_legroom_extra</i></p>
-                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
                 <h3 class="uk-text-center mf-price uk-margin-remove">568</h3>
                 <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
                 <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
                 <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/select-seats?class=first'">Select</button>
             </div>
         </div>
+        <% }) %>
         <!-- END FLIGHT INFO -->
 
-        <!-- START FLIGHT INFO -->
-        <div class="uk-card uk-card-default uk-card-body uk-width-5-5 uk-flex uk-flex-between uk-padding-remove uk-margin-bottom">
-            <!-- <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div> -->
-            <div class="uk-width-2-5 uk-margin-small-top">
-                <div class="uk-padding uk-flex-column">
-                    <!-- Flight# and Duration -->
-                    <div class="uk-flex uk-flex-between uk-margin">
-                        <div>
-                            <p class="uk-text-primary uk-text-small uk-margin-remove">DL2442</p>
-                        </div>
-                        <div>
-                            <p class="uk-text-small uk-margin-remove">2h 18m</p>
-                        </div>
-                    </div>
-
-                    <!-- Departure & Arrival Times -->
-                    <div class="uk-flex uk-flex-between uk-margin">
-                        <div>
-                            <h2 class="uk-text-light">8:15am</h2>
-                        </div>
-                        <div>
-                            <i class="material-icons airplane uk-text-secondary">airplanemode_active</i>
-                        </div>
-                        
-                        <div>
-                            <h2 class="uk-text-light ">9:33am</h2>
-                        </div>
-                    </div>
-
-                    <!-- Border Thingie -->
-                    <div class="mf-flight-border"></div>
-
-                    <!-- City / Nonstop Thingies -->
-                    <div class="uk-flex uk-flex-between uk-margin-small-top">
-                        <div class="uk-flex uk-flex-column uk-flex-top">
-                            <small class="uk-text-left uk-text-bold uk-text-secondary">ATL</small>
-                            <small class="uk-text-left">Atlanta, GA</small>
-                        </div>
-                        <div class="uk-flex uk-flex-column uk-flex-top">
-                            <small class="uk-text-muted">Nonstop</small>
-                            <br/>
-                        </div>
-                        <div class="uk-flex uk-flex-column uk-flex-top">
-                            <small class="uk-text-bold uk-text-secondary uk-text-right" style="margin-left: auto">AUS</small>
-                            <small class="uk-text-right">Austin, TX</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Details / Seats / Amenities -->
-                <div class="uk-flex uk-flex-between uk-card-footer mf">
-                    <div class="uk-flex uk-flex-between">
-                        <button class="uk-button mf uk-button-default uk-button-small">Seats</button>
-                    </div>
-
-                    <div class="uk-flex uk-flex-between">
-                        <div uk-tooltip="title: On-Flight Wi-Fi; pos: bottom"><i class="material-icons mf wifi uk-text-primary">wifi</i></div>
-                        <div uk-tooltip="title: Charging Ports; pos: bottom"><i class="material-icons mf electrical_services uk-text-primary">electrical_services</i></div>
-                        <div uk-tooltip="title: USB Connections; pos: bottom"><i class="material-icons mf usb uk-text-primary">usb</i></div>
-                        <div uk-tooltip="title: Seatback Entertainment Screens; pos: bottom"><i class="material-icons mf tv uk-text-primary">tv</i></div>
-                        <div uk-tooltip="title: In-Flight Entertainment; pos: bottom"><i class="material-icons mf movie uk-text-primary">movie</i></div>
-                        <div uk-tooltip="title: No Meals Provided; pos: bottom"><i class="material-icons mf no_meals uk-text-primary">no_meals</i></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="uk-width-1-5 mf-class-options uk-padding uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
-                <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Economy<br /><i class="material-icons mf airline_seat_legroom_reduced uk-text-primary">airline_seat_legroom_reduced</i></p>
-                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
-                <h3 class="uk-text-center mf-price uk-margin-remove">118</h3>
-                <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
-                <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
-                <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/select-seats?class=economy'">Select</button>
-            </div>
-            <div class="uk-width-1-5 mf-class-options uk-padding comfort uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
-                <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Preferred+<br/><i class="material-icons mf airline_seat_legroom_normal uk-text-primary">airline_seat_legroom_normal</i></p>
-                <p class="uk-text-center uk-text-muted uk-margin-small"><small>From</small></p>
-                <h3 class="uk-text-center mf-price uk-margin-remove">356</h3>
-                <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
-                <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
-                <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/select-seats?class=preferred'">Select</button>
-            </div>
-            <div class="uk-width-1-5 mf-class-options uk-padding first uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-flex-space-around">
-                <p class="uk-text-center uk-text-muted uk-margin-small">Unavailable</p>
-            </div>
-        </div>
-        <!-- END FLIGHT INFO -->
+        <!-- UNAVAILABLE CARD -->
+        <!-- <div class="uk-width-1-5 mf-class-options uk-padding first uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-flex-space-around">
+            <p class="uk-text-center uk-text-muted uk-margin-small">Unavailable</p>
+        </div> -->
 
 
 
