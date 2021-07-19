@@ -13,7 +13,11 @@
         </div>
 
         <div class="uk-container uk-flex uk-flex-right">
-            <button class="uk-button uk-button-primary uk-button-large" onclick="window.location.href='/flights/checkout'">Review and Pay</button>
+            <% if(query.trip_type === 'round-trip') {  %>
+                <button class="uk-button uk-button-primary uk-button-large" onclick="window.location.href='<%= `/flights/checkout?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}&return_flight=${query.return_flight}&return_class=${query.return_class}` %>'">Review and Pay</button>
+            <% } else { %>
+                <button class="uk-button uk-button-primary uk-button-large" onclick="window.location.href='<%= `/flights/checkout?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}`%>'">Review and Pay</button>
+            <% } %>
         </div>
     </div>
 </body>

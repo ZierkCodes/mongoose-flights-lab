@@ -5,7 +5,10 @@ export {
     createFlight,
     getFlights,
     getFlight,
-    queryFlights
+    queryOutboundFlights,
+    queryReturnFlights,
+    getOneWaySummary,
+    getRoundTripSummary
  }
 
  const flight_fields = ['number', 'airline', 'plane', 'origin', 'destination', 'departure', 'duration', 'gate', 'amenities', 'tickets']
@@ -14,90 +17,183 @@ export {
  * This create method will automagically create a flight with all the required data at the click of a button! =) 
  */
 function createFlight(req, res) {
-    let airline = randomAirline();
-    let origin = randomAirport();
-    let destination = randomDestination(origin.code);
-    let duration = generateDuration()
-
-    let flight_data = {
-        number: generateFlightNumber(airline.code),
-        airline: airline.name,
-        plane: {
-            name: randomPlane()
-        },
-        origin: origin,
-        destination: destination,
-        departure: generateDeparture(),
-        duration: duration,
-        gate: generateGate(),
-        amenities: randomAmenities(duration),
-        tickets: []
+    for(let i = 0; i < 200; i++) {
+        let airline = randomAirline();
+        let origin = randomAirport();
+        let destination = randomDestination(origin.code);
+        let duration = generateDuration()
+    
+        let flight_data = {
+            number: generateFlightNumber(airline.code),
+            airline: airline.name,
+            plane: {
+                name: randomPlane()
+            },
+            origin: origin,
+            destination: destination,
+            departure: generateDeparture(),
+            duration: duration,
+            gate: generateGate(),
+            amenities: randomAmenities(duration),
+            tickets: []
+        }
+    
+        const flight = new Flight(flight_data);
+        let tickets = generateTickets(flight)
+        flight.set({
+            tickets: tickets
+        })
+    
+        Flight.find({$or:[{number: flight.number}, {depature: flight.departure}]}, function(error, records) {
+            if(records.length) {
+                // res.send('A similar flight already exists. Try creating a new one.')
+            } else {
+                flight.save(function (error) {
+                    if(error) {
+                        // return res.send(error)
+                        console.log(error)
+                    } else {
+                        // return res.send(flight._id)
+                        console.log('OK')
+                    }
+                })
+            }
+        })
     }
-    console.log(flight_data)
+    
+}
 
-    const flight = new Flight(flight_data);
-    let tickets = generateTickets(flight)
-    flight.set({
-        tickets: tickets
+function getOneWaySummary(req, res, next) {
+    if(req.query.trip_type === 'round-trip') {
+        return next();
+    }
+ 
+    let results = Flight.find({
+        'number': req.query.flight
     })
 
-    Flight.find({$or:[{number: flight.number}, {depature: flight.departure}]}, function(error, records) {
-        if(records.length) {
-            res.send('A similar flight already exists. Try creating a new one.')
-        } else {
-            flight.save(function (error) {
-                if(error) {
-                    return res.send(error)
-                } else {
-                    return res.send(flight._id)
-                }
-            })
-        }
+    let promise = results.exec()
+
+    promise.then((data) => {
+        res.render('flights/summary', {activePage: 'trip-summary', data: data, query: {
+            passengers: req.query.passengers,
+            outbound_flight: req.query.flight,
+            outbound_class: req.query.class,
+            trip_type: req.query.trip_type
+        }})
     })
 }
 
-function queryFlights(req, res) {
-    "use strict"
-
-    let origin = req.query.origin
-    let destination = req.query.destination
-    let passengers = req.query.passengers
-    let departure_date = req.query.departure_date
-    let return_date = null
-    let trip_type = req.query.trip_type
-
-    if(trip_type === 'round-trip') {
-        return_date = req.body.return_date
-    }
-
-
-
-    Flight.find({
-        'origin.code': req.query.origin, 
-        'destination.code': req.query.destination
-    }).select({
-        '_id': 1,
-        'number': 1,
-        'airline': 1,
-        'plane': 1,
-        'origin': 1,
-        'destination': 1,
-        'duration': 1,
-        'departure': 1,
-        'gate': 1,
-        'amenities': 1,
-        'tickets': 1
-    }).then((data) => {
-        let query = {
-            flight_type: 'Outbound',
-            origin: req.query.origin,
-            destination: req.query.destination,
-            departure: req.query.departure_date
-        }
-        res.render('flights/flights', {data, query})
-    }).catch((error) => {
-        res.send(error)
+function getRoundTripSummary(req, res, next) {
+     let results = Flight.find({'number': {$in: [req.query.outbound_flight, req.query.return_flight]}})
+    let promise = results.exec()
+    promise.then((data) => {
+        res.render('flights/summary', {activePage: 'trip-summary', data: data, query: {
+            passengers: req.query.passengers,
+            outbound_flight: req.query.outbound_flight,
+            outbound_class: req.query.outbound_class,
+            return_flight: req.query.return_flight,
+            return_class: req.query.return_class,
+            trip_type: req.query.trip_type
+        }})
     })
+
+}
+
+function queryReturnFlights(req, res) {
+    let results = Flight.find({
+        'origin.code': req.query.return_origin, 
+        'destination.code': req.query.return_destination
+    })
+
+    let promise = results.exec();
+    
+    promise.then((data) => {
+        return res.render('flights/flights', {data: data, query: {
+            flight_type: 'Return',
+            trip_type: req.query.trip_type,
+            origin: req.query.return_origin,
+            destination: req.query.return_destination,
+            outbound_flight: req.query.flight,
+            outbound_class: req.query.outbound_class,
+            passengers: req.query.passengers
+        }})
+    })
+}
+
+function queryOutboundFlights(req, res, next) {
+
+    // let origin = req.query.origin
+    // let destination = req.query.destination
+    // let passengers = req.query.passengers
+    // let departure_date = req.query.departure_date
+    // let return_date = null
+    
+        if(req.query.flight_type) {
+            return next();
+        }
+
+        let results = Flight.find({
+            'origin.code': req.query.origin, 
+            'destination.code': req.query.destination
+        }).sort({'departure': 1})
+
+        let promise = results.exec();
+        
+        promise.then((data) => {
+            return res.render('flights/flights', {data, query: {
+                flight_type: 'Outbound',
+                origin: req.query.origin,
+                destination: req.query.destination,
+                departure: req.query.departure_date,
+                passengers: req.query.passengers,
+                trip_type: req.query.trip_type
+            }})
+        })
+
+        
+
+    // if(req.query.flight_type) {
+    //     // This is the second flight search!
+    //     let results = Flight.find({
+    //         'origin.code': req.query.origin, 
+    //         'destination.code': req.query.destination
+    //     }).sort({'departure': 1})
+    
+    //     let promise = results.exec();
+        
+    //     promise.then((data) => {
+    //         res.render('flights/flights', {data, query: {
+    //             flight_type: 'Return',
+    //             trip_type: req.query.trip_type,
+    //             origin: req.query.return_origin,
+    //             destination: req.query.return_destination,
+    //             outbound_flight: req.query.flight,
+    //             outbound_class: req.query.outbound_class,
+    //             passengers: req.query.passengers
+    //         }})
+    //     })
+    // }
+
+    // console.log(req.query.destination)
+    // console.log(req.query.origin)
+
+    // console.log(query.origin)
+    // console.log(query.destination)
+
+    // let results = Flight.find({
+    //     'origin.code': query.origin, 
+    //     'destination.code': query.destination
+    // }).sort({'departure': 1})
+
+    // let promise = results.exec();
+    
+    // promise.then((data) => {
+    //     res.render('flights/flights', {data, query})
+    // })
+    // .catch((error) => {
+    //     res.send(error)
+    // })
     // res.send({origin, destination, passengers, trip_type, departure_date, return_date})
     // Origin Airport - OR - City
     // Destination Airport - OR - City
@@ -345,8 +441,8 @@ function generateTickets(flight) {
 
 function generateConfirmationNumber() {
     let letters = 'ABCDEFGHJKLMNPRSTUVWXYZ'
-    let number = Math.floor(Math.random() * 1000000000)
-    let confirmation = letters[Math.floor(Math.random() * letters.length)] + number
+    let number = Math.floor(Math.random() * 10000)
+    let confirmation = letters[Math.floor(Math.random() * letters.length)] + letters[Math.floor(Math.random() * letters.length)] + letters[Math.floor(Math.random() * letters.length)] + number
     return confirmation
 }
 
@@ -380,19 +476,19 @@ function generateBoardingZone() {
 
 function generatePrice(flight_class) {
     let price = 0;
-    price = Math.floor(75 + Math.random() * 205)
+    price = Math.floor((75 + Math.random() * 205))
 
     if(flight_class === 'economy') {
         return price
     }
 
     if(flight_class === 'preferred') {
-        price += Math.floor(100 + Math.random() * 215)
+        price += Math.floor((100 + Math.random() * 215))
         return price
     }
 
     if(flight_class === 'first') {
-        price += Math.floor(350 + Math.random() * 510)
+        price += Math.floor((350 + Math.random() * 510))
         return price
     }
 }

@@ -1,8 +1,8 @@
 <div class="uk-section uk-section-muted">
     <div class="uk-container">
         <header class="uk-flex uk-flex-column ux-flex-top uk-margin-small-bottom">
-            <h2 class="uk-text-normal"><%= query.flight_type %> <span class="uk-text-light"><%= query.origin %><span class="uk-text-primary" uk-icon="icon: arrow-right; ratio: 2"></span><%= query.destination %></span></h2>
-            <h3 class="uk-text-light uk-margin-remove">Saturday <span class="uk-text-primary uk-text-normal"><%= query.departure %></span></h3>
+            <h2 class="uk-text-normal"><%= query.flight_type %> Flight <span class="uk-text-light"><%= query.origin %><span class="uk-text-primary" uk-icon="icon: arrow-right; ratio: 2"></span><%= query.destination %></span></h2>
+            
             <!-- <div class="uk-flex uk-flex-center">
                 <h2 class="uk-text-light uk-margin-right">Saturday <span class="uk-text-primary uk-text-normal">Aug 23</span></h2>
                 <div><a href="#"><span uk-icon="icon: settings"></span></a></div>
@@ -12,18 +12,19 @@
         <!-- START FLIGHT INFO -->
         <% data.forEach((flight) => { %>
 
-        
-        <div class="uk-card uk-card-default uk-card-body uk-width-5-5 uk-flex uk-flex-between uk-padding-remove uk-margin-bottom">
-            <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div>
-            <div class="uk-width-2-5 uk-margin-small-top">
+        <div class="uk-card uk-card-default uk-card-body uk-width-5-5 uk-flex uk-flex-between uk-padding-remove uk-margin-large-bottom">
+            <!-- <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div> -->
+            <div class="uk-width-2-5">
                 <div class="uk-padding uk-flex-column">
                     <!-- Flight# and Duration -->
                     <div class="uk-flex uk-flex-between uk-margin">
                         <div>
+                            <p class="uk-text-secondary uk-text-small uk-margin-remove uk-text-bold"><%= flight.airline %></p>
                             <p class="uk-text-primary uk-text-small uk-margin-remove"><%= flight.number %> <span class="uk-text-muted mf-model"><%= flight.plane.name %></span></p>
                         </div>
                         <div>
-                            <p class="uk-text-small uk-margin-remove"><%= flight.duration.hours %>h <%= flight.duration.minutes %>m</p>
+                            <p class="uk-text-small uk-margin-remove uk-text-right uk-text-secondary"><%= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][flight.departure.getMonth()] %> <%= flight.departure.getDay()%>, <%= flight.departure.getFullYear()%></p>
+                            <p class="uk-text-small uk-margin-remove uk-text-right"><%= flight.duration.hours %>h <%= flight.duration.minutes %>m</p>
                         </div>
                     </div>
 
@@ -34,6 +35,7 @@
                                 <% let hours = flight.departure.getHours() %>
                                 <% let minutes = flight.departure.getMinutes() %>
                                 <% if(minutes >= 60) { hours += Math.floor(minutes / 60); minutes = minutes % 60 } %>
+                                <% if(hours >= 24) { hours = hours % 24 } %>
                                 <% let ampm = hours >= 12 ? 'pm' : 'am' %>
                                 <% hours = hours % 12 %>
                                 <% hours = hours ? hours : 12 %>
@@ -49,8 +51,10 @@
                         <div>
                             <h2 class="uk-text-light ">
                                 <% hours = flight.departure.getHours() + flight.duration.hours %>
+                                <% console.log(hours) %>
                                 <% minutes = flight.departure.getMinutes() + flight.duration.minutes %>
                                 <% if(minutes >= 60) { hours += Math.floor(minutes / 60); minutes = minutes % 60 } %>
+                                <% if(hours >= 24) { hours = hours % 24 } %>
                                 <% ampm = hours >= 12 ? 'pm' : 'am' %>
                                 <% hours = hours % 12 %>
                                 <% hours = hours ? hours : 12 %>
@@ -109,28 +113,81 @@
                 </div>
             </div>
 
+            <% var lowest_price_first = 0; %>
+            <% var lowest_price_preferred = 0; %>
+            <% var lowest_price_economy = 0; %>
+
+            <% flight.tickets.forEach((ticket) => { %>
+                <% if(ticket.flight_class === 'first') { %>
+                    <% if(lowest_price_first === 0 || lowest_price_first > ticket.price) { %>
+                        <% lowest_price_first = ticket.price %>
+                    <% } %>
+                <% } %>
+
+                <% if(ticket.flight_class === 'preferred') { %>
+                    <% if(lowest_price_preferred === 0 || lowest_price_preferred > ticket.price) { %>
+                        <% lowest_price_preferred = ticket.price %>
+                    <% } %>
+                <% } %>
+
+                <% if(ticket.flight_class === 'economy') { %>
+                    <% if(lowest_price_economy === 0 || lowest_price_economy > ticket.price) { %>
+                        <% lowest_price_economy = ticket.price %>
+                    <% } %>
+                <% } %>
+            <% }) %>
+
             <div class="uk-width-1-5 mf-class-options uk-padding uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
                 <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Economy<br /><i class="material-icons mf airline_seat_legroom_reduced uk-text-primary">airline_seat_legroom_reduced</i></p>
-                <h3 class="uk-text-center mf-price uk-margin-remove">107</h3>
+                <p class="uk-text-center uk-text-muted uk-text-small uk-margin-remove">From</p>
+                <h3 class="uk-text-center mf-price uk-margin-remove"><%= lowest_price_economy %></h3>
                 <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
                 <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
-                <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/select-seats?class=economy'">Select</button>
+                <% if(query.trip_type === 'round-trip') { %>
+                    <% if(query.flight_type === 'Return') { %>
+                        <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/summary?trip_type=round-trip&passengers=<%= query.passengers %>&outbound_flight=<%= query.outbound_flight %>&outbound_class=<%= query.outbound_class %>&return_flight=<%= flight.number %>&return_class=economy'">Select</button>
+                    <% } else { %>
+                        <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=economy&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>'">Select</button>
+                    <% } %>
+                <% } else { %>
+                    <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/summary?class=economy&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=one-way'">Select</button>
+                <% } %>
             </div>
             <div class="uk-width-1-5 mf-class-options uk-padding comfort uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
                 <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">Preferred+<br/><i class="material-icons mf airline_seat_legroom_normal uk-text-primary">airline_seat_legroom_normal</i></p>
-                <h3 class="uk-text-center mf-price uk-margin-remove">327</h3>
+                <p class="uk-text-center uk-text-muted uk-text-small uk-margin-remove">From</p>
+                <h3 class="uk-text-center mf-price uk-margin-remove"><%= lowest_price_preferred %></h3>
                 <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
                 <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
-                <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/select-seats?class=preferred'">Select</button>
+                <% if(query.trip_type === 'round-trip') { %>
+                    <% if(query.flight_type === 'Return') { %>
+                        <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/summary?trip_type=round-trip&passengers=<%= query.passengers %>&outbound_flight=<%= query.outbound_flight %>&outbound_class=<%= query.outbound_class %>&return_flight=<%= flight.number %>&return_class=preferred'">Select</button>
+                    <% } else { %>
+                        <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=preferred&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>'">Select</button>
+                    <% } %>
+                <% } else { %>
+                    <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/summary?class=preferred&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=one-way'">Select</button>
+                <% } %>
             </div>
             <div class="uk-width-1-5 mf-class-options uk-padding first uk-flex uk-flex-column uk-flex-middle uk-flex-space-between">
                 <p class="uk-text-center uk-text-primary uk-text-bold uk-text-small">First Class<br /><i class="material-icons mf airline_seat_legroom_extra uk-text-primary">airline_seat_legroom_extra</i></p>
-                <h3 class="uk-text-center mf-price uk-margin-remove">568</h3>
+                <p class="uk-text-center uk-text-muted uk-text-small uk-margin-remove">From</p>
+                <h3 class="uk-text-center mf-price uk-margin-remove"><%= lowest_price_first %></h3>
                 <p class="uk-text-center uk-margin-remove uk-text-secondary"><small>Round Trip</small></p>
                 <p class="uk-text-center uk-margin-remove uk-text-muted"><small>(per person)</small></p>
-                <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/select-seats?class=first'">Select</button>
+                <% if(query.trip_type === 'round-trip') { %>
+                    <% if(query.flight_type === 'Return') { %>
+                        <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/summary?trip_type=round-trip&passengers=<%= query.passengers %>&outbound_flight=<%= query.outbound_flight %>&outbound_class=<%= query.outbound_class %>&return_flight=<%= flight.number %>&return_class=first'">Select</button>
+                    <% } else { %>
+                        <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=first&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>'">Select</button>
+                    <% } %>
+                <% } else { %>
+                    <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/summary?class=first&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=one-way'">Select</button>
+                <% } %>
             </div>
         </div>
+        <!-- MUST ADD CONDITIONALS FOR RETURN BTNS-->
+                
         <% }) %>
         <!-- END FLIGHT INFO -->
 

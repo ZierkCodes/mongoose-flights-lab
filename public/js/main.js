@@ -40,7 +40,7 @@ if(searchFlightsBtn) {
     } else {
       // Create the Query String... fml
       let url = `/flights?origin=${origin_elem.value}&destination=${destination_elem.value}&passengers=${passengers_elem.value}&trip_type=${trip_type_elem.value}&departure_date=${departure_date_elem.value}&return_date=${return_date_elem.value}`;
-      window.location.href = url;
+      return window.location.href = url;
     }
   })
 }
