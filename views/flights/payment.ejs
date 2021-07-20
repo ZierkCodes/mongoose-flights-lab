@@ -19,6 +19,8 @@
                 </div>
                 <div class="uk-card-body mf-select-seats">
                     <!-- EMPTY STATE / NO SEATS SELECTED -->
+                    <% let outbound_seats_array = null %>
+                    <% let return_seats_array = null %>
                     <% if (!query.outbound_seats) { %>
                         <div class="uk-flex uk-flex-between uk-flex-middle">
                             
@@ -33,8 +35,8 @@
                         </div>
                     <% } else { %>
                         <div>
-                            <% let outbound_seats_array = query.outbound_seats.split(',') %> 
-                            <% let return_seats_array = [] %>
+                            <% outbound_seats_array = query.outbound_seats.split(',') %> 
+                            <% return_seats_array = [] %>
                             <% if (query.return_seats) { %>
                                 <% return_seats_array = query.return_seats.split(',')  %> 
                             <% } %>
@@ -327,17 +329,20 @@
                             <% for( let index = 0; index < query.passengers; index++ ) { %>
                                 <% let tickets = data[0].tickets.filter(t => {
 
-                                    if(`${t.seat.isle}${t.seat.number}` === outbound_seats_array[index] && t.flight_class === query.outbound_class) {
-                                        outbound_tickets.push(t)
-                                        outbound_total += t.price
-                                        outbound_ticket_price = t.price
-                                        return t
+                                    if(`${t.seat.isle}${t.seat.number}` === outbound_seats_array[index] && t.flight_class === query.outbound_class && t.passenger.first_name === '') {
+                
+                                        if(t.passenger.firstname === undefined) {
+                                            outbound_tickets.push(t)
+                                            outbound_total += t.price
+                                            outbound_ticket_price = t.price
+                                            return t
+                                        }
+                                        
                                     }
 
                                 }) %>
                                 
                             <% } %>
-                            
                             <h5 class="uk-text-light uk-margin-remove uk-width-1-4">$<%= outbound_ticket_price %><span class="uk-text-muted"> x<%= query.passengers %></span></h5>
                             <h3 class="uk-margin-remove uk-width-1-4 uk-text-right">$<%= outbound_total %></h3>
                         </div>
@@ -357,19 +362,16 @@
                             <% let return_tickets = [] %>
                             <% let ticket_price = 0 %>
                             <% let return_seats_array = query.return_seats.split(',') %>
-                            <% console.log(return_seats_array) %>
                             <% for( let index = 0; index < query.passengers; index++ ) { %>
                                 <% let tickets = data[1].tickets.filter(t => {
-                                    console.log(`${t.seat.isle}${t.seat.number}`)
-                                    if(`${t.seat.isle}${t.seat.number}` === return_seats_array[index] && t.flight_class === query.return_class) {
-                                        return_tickets.push(t)
-                                        return_total += t.price
-                                        ticket_price = t.price
-                                        return t
+                                    if(`${t.seat.isle}${t.seat.number}` === return_seats_array[index] && t.flight_class === query.return_class && t.passenger.first_name === '') {
+                                            return_tickets.push(t)
+                                            return_total += t.price
+                                            ticket_price = t.price
+                                            return t
                                     }
 
                                 }) %>
-                                
                             <% } %>
                             <h5 class="uk-text-light uk-margin-remove uk-width-1-4">$<%= ticket_price %><span class="uk-text-muted"> x<%= query.passengers %></span></h5>
                             <h3 class="uk-margin-remove uk-width-1-4 uk-text-right">$<%= return_total %></h3>
@@ -403,7 +405,21 @@
             </div>
 
             <div class="uk-container uk-margin uk-flex uk-flex-right">
-                        
+                <% let ob_tracking_numbers = [] %>
+                <% for(let i = 0; i < outbound_seats_array.length; i++){
+                    let the_ticket = data[0].tickets.filter((ticket) => {
+                        let ticket_seat = `${ticket.seat.isle}${ticket.seat.number}`
+
+                        if(ticket_seat === outbound_seats_array[i]) {
+                            if(ticket.passenger.first_name) {
+                                console.log(ticket.passenger.first_name)
+                            } else { 
+                                ob_tracking_numbers.push(ticket.tracking_number)
+                            }
+                        }                       
+                    })
+                } %>
+                <% console.log(data[0]._id) %>
                 <button class="uk-button uk-button-primary uk-button-large uk-margin-left" onclick="window.location.href='/flights/confirmation'">Complete Purchase</button>
             </div>
         </div>

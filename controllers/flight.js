@@ -421,6 +421,12 @@ function randomAmenities(duration) {
     return amenities
 }
 
+function purchaseTickets(req, res, next) {
+    // First Name and Last Name for Each Passenger
+    // Tickets Array in String Format
+    // Flight Numbers
+}
+
 function generateTickets(flight) {
     let tickets = []
     let prices = generatePrice()

@@ -63,7 +63,7 @@ if(window.location.href.indexOf('/seats') > -1) {
   const next_flight_btn = document.querySelector('#next-flight-btn');
   const next_passenger_btn = document.querySelector('#next-passenger-btn')
 
-  const seats = document.querySelectorAll('.mf-seat');
+  const seats = document.querySelectorAll('.mf-seat:not(.unavailable)');
   let seat_icon_el = document.querySelector('.mf-seat-selection')
   let passenger_text_el = document.querySelector('#passenger-count')
   let selected_seat
@@ -183,7 +183,12 @@ if(window.location.href.indexOf('/seats') > -1) {
 
   seats.forEach((seat) => {
     seat.addEventListener('click', function(e) {
-      if(e.currentTarget.dataset.available === 'true' && e.currentTarget.dataset.class === outbound_class || e.currentTarget.dataset.class === return_class) {
+      console.log("avail?" + e.currentTarget.dataset.available)
+      console.log(e.currentTarget.dataset.seat)
+      if(e.currentTarget.dataset.available == false) {
+        return;
+      }
+      if(e.currentTarget.dataset.available === true && e.currentTarget.dataset.class === outbound_class || e.currentTarget.dataset.class === return_class) {
         if(!selected_seat) {
           // No seat previously selected
           e.currentTarget.classList.add('selected')
@@ -205,6 +210,7 @@ if(window.location.href.indexOf('/seats') > -1) {
     })
   })
 }
+
 
 
 
