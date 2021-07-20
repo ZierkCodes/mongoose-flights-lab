@@ -8,7 +8,11 @@ export {
     queryOutboundFlights,
     queryReturnFlights,
     getOneWaySummary,
-    getRoundTripSummary
+    getRoundTripSummary,
+    checkOutTrip,
+    checkOutRoundTrip,
+    selectOneWaySeats,
+    selectRoundTripSeats
  }
 
  const flight_fields = ['number', 'airline', 'plane', 'origin', 'destination', 'departure', 'duration', 'gate', 'amenities', 'tickets']
@@ -17,11 +21,13 @@ export {
  * This create method will automagically create a flight with all the required data at the click of a button! =) 
  */
 function createFlight(req, res) {
-    for(let i = 0; i < 200; i++) {
+    for(let i = 0; i < 1400; i++) {
         let airline = randomAirline();
         let origin = randomAirport();
         let destination = randomDestination(origin.code);
         let duration = generateDuration()
+        let departure = generateDeparture()
+        let departure_date = dateString(departure)
     
         let flight_data = {
             number: generateFlightNumber(airline.code),
@@ -31,7 +37,8 @@ function createFlight(req, res) {
             },
             origin: origin,
             destination: destination,
-            departure: generateDeparture(),
+            departure: departure,
+            departure_date: departure_date,
             duration: duration,
             gate: generateGate(),
             amenities: randomAmenities(duration),
@@ -44,23 +51,107 @@ function createFlight(req, res) {
             tickets: tickets
         })
     
-        Flight.find({$or:[{number: flight.number}, {depature: flight.departure}]}, function(error, records) {
+        Flight.find({$or:[{number: flight.number}]}, function(error, records) {
             if(records.length) {
                 // res.send('A similar flight already exists. Try creating a new one.')
             } else {
-                flight.save(function (error) {
+                flight.save(function (error, flight) {
                     if(error) {
                         // return res.send(error)
                         console.log(error)
                     } else {
                         // return res.send(flight._id)
                         console.log('OK')
+                        console.log(flight._id)
                     }
                 })
             }
         })
     }
     
+}
+
+function selectOneWaySeats(req, res, next) {
+    if(req.query.trip_type === 'round-trip') {
+        return next();
+    }
+    console.log(req.query.outbound_flight)
+    let results = Flight.find({
+        'number': req.query.outbound_flight
+    })
+
+    let promise = results.exec()
+
+    promise.then((data) => {
+        res.render('flights/seats', {data: data, query: {
+            passengers: req.query.passengers,
+            outbound_flight: req.query.outbound_flight,
+            outbound_class: req.query.outbound_class,
+            trip_type: req.query.trip_type
+        }})
+    })
+
+}
+
+function selectRoundTripSeats(req, res, next) {
+    // Screen 1 - Outbound Flight
+    //          - js button to select next passenger
+    // Screen 2 - Return Flight
+
+    // for loop index
+    // pX seat selection (for each passenger)
+    let results = Flight.find({'number': {$in: [req.query.outbound_flight, req.query.return_flight]}})
+    let promise = results.exec()
+
+    promise.then((data) => {
+        res.render('flights/seats', {data: data.reverse(), query: {
+            passengers: req.query.passengers,
+            outbound_flight: req.query.outbound_flight,
+            outbound_class: req.query.outbound_class,
+            return_flight: req.query.return_flight,
+            return_class: req.query.return_class,
+            trip_type: req.query.trip_type
+        }})
+    })
+}
+
+function checkOutTrip(req, res, next) {
+    if(req.query.trip_type === 'round-trip') {
+        return next();
+    }
+ 
+    let results = Flight.find({
+        'number': req.query.outbound_flight
+    })
+
+    let promise = results.exec()
+
+    promise.then((data) => {
+        res.render('flights/payment', {activePage: 'review-and-pay', data: data, query: {
+            passengers: req.query.passengers,
+            outbound_flight: req.query.outbound_flight,
+            outbound_class: req.query.outbound_class,
+            outbound_seats: req.query.outbound_seats,
+            trip_type: req.query.trip_type
+        }})
+    })
+}
+
+function checkOutRoundTrip(req, res, next) {
+    let results = Flight.find({'number': {$in: [req.query.outbound_flight, req.query.return_flight]}})
+    let promise = results.exec()
+    promise.then((data) => {
+        res.render('flights/payment', {activePage: 'review-and-pay', data: data.reverse(), query: {
+            passengers: req.query.passengers,
+            outbound_flight: req.query.outbound_flight,
+            outbound_class: req.query.outbound_class,
+            outbound_seats: req.query.outbound_seats,
+            return_flight: req.query.return_flight,
+            return_class: req.query.return_class,
+            return_seats: req.query.return_seats,
+            trip_type: req.query.trip_type
+        }})
+    })
 }
 
 function getOneWaySummary(req, res, next) {
@@ -85,10 +176,10 @@ function getOneWaySummary(req, res, next) {
 }
 
 function getRoundTripSummary(req, res, next) {
-     let results = Flight.find({'number': {$in: [req.query.outbound_flight, req.query.return_flight]}})
+    let results = Flight.find({'number': {$in: [req.query.outbound_flight, req.query.return_flight]}})
     let promise = results.exec()
     promise.then((data) => {
-        res.render('flights/summary', {activePage: 'trip-summary', data: data, query: {
+        res.render('flights/summary', {activePage: 'trip-summary', data: data.reverse(), query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.outbound_flight,
             outbound_class: req.query.outbound_class,
@@ -101,7 +192,15 @@ function getRoundTripSummary(req, res, next) {
 }
 
 function queryReturnFlights(req, res) {
+    let year = new Date().getFullYear();
+        let req_date = req.query.return_date + ' ' + year
+        let departure = new Date(req_date)
+        let departure_string = dateString(departure)
+        console.log("DEP STR")
+        console.log(departure_string)
+        
     let results = Flight.find({
+        'departure_date': departure_string,
         'origin.code': req.query.return_origin, 
         'destination.code': req.query.return_destination
     })
@@ -122,90 +221,45 @@ function queryReturnFlights(req, res) {
 }
 
 function queryOutboundFlights(req, res, next) {
-
-    // let origin = req.query.origin
-    // let destination = req.query.destination
-    // let passengers = req.query.passengers
-    // let departure_date = req.query.departure_date
-    // let return_date = null
-    
+  
         if(req.query.flight_type) {
             return next();
         }
 
+        console.log(req.query.departure_date)
+        let year = new Date().getFullYear();
+        let req_date = req.query.departure_date + ' ' + year
+        let departure = new Date(req_date)
+        let departure_string = dateString(departure)
+        console.log("DEP STR")
+        console.log(departure_string)
+
+        /**
+         *             'origin.code': req.query.origin, 
+            'destination.code': req.query.destination,
+         */
+
         let results = Flight.find({
-            'origin.code': req.query.origin, 
+            'departure_date': departure_string,
+            'origin.code': req.query.origin,
             'destination.code': req.query.destination
-        }).sort({'departure': 1})
+        })
 
         let promise = results.exec();
         
         promise.then((data) => {
+            // Sort the flights
+            data.sort((a, b) => { a.departure - b.departure })
             return res.render('flights/flights', {data, query: {
                 flight_type: 'Outbound',
                 origin: req.query.origin,
                 destination: req.query.destination,
                 departure: req.query.departure_date,
+                return_date: req.query.return_date,
                 passengers: req.query.passengers,
                 trip_type: req.query.trip_type
             }})
         })
-
-        
-
-    // if(req.query.flight_type) {
-    //     // This is the second flight search!
-    //     let results = Flight.find({
-    //         'origin.code': req.query.origin, 
-    //         'destination.code': req.query.destination
-    //     }).sort({'departure': 1})
-    
-    //     let promise = results.exec();
-        
-    //     promise.then((data) => {
-    //         res.render('flights/flights', {data, query: {
-    //             flight_type: 'Return',
-    //             trip_type: req.query.trip_type,
-    //             origin: req.query.return_origin,
-    //             destination: req.query.return_destination,
-    //             outbound_flight: req.query.flight,
-    //             outbound_class: req.query.outbound_class,
-    //             passengers: req.query.passengers
-    //         }})
-    //     })
-    // }
-
-    // console.log(req.query.destination)
-    // console.log(req.query.origin)
-
-    // console.log(query.origin)
-    // console.log(query.destination)
-
-    // let results = Flight.find({
-    //     'origin.code': query.origin, 
-    //     'destination.code': query.destination
-    // }).sort({'departure': 1})
-
-    // let promise = results.exec();
-    
-    // promise.then((data) => {
-    //     res.render('flights/flights', {data, query})
-    // })
-    // .catch((error) => {
-    //     res.send(error)
-    // })
-    // res.send({origin, destination, passengers, trip_type, departure_date, return_date})
-    // Origin Airport - OR - City
-    // Destination Airport - OR - City
-    // Passenger Count
-    // Trip Type - Round Trip / One-Way
-    // Date Start
-    // Date End - IF ROUND TRIP
-    
-    // QUERY FLIGHTS
-    // Query Flight Date Start
-    // IF ROUND TRIP
-    // Query Flights Date End
 }
 
 function getFlights(req, res) {
@@ -302,10 +356,10 @@ function generateDeparture() {
     // date created
     let currentDate = new Date();
     let currentYear = currentDate.getFullYear()
-    let currentMonth = currentDate.getMonth() + 1
+    let currentMonth = currentDate.getMonth()
 
-    let startDate = new Date(currentYear, currentMonth, 1)
-    let endDate = new Date();
+    let startDate = new Date()
+    let endDate = new Date(currentYear, currentMonth + 1, 30);
     let startHour = 0;
     let endHour = 24;
 
@@ -313,6 +367,20 @@ function generateDeparture() {
     let hour = startHour + Math.random() * (endHour - startHour) | 0;
     date.setHours(hour);
     return date;
+}
+
+function dateString(date) {
+    var d = date,
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    let date_string = [year, month, day].join('-')
+    console.log(date_string)
+    return date_string;
 }
 
 function generateDuration() {
@@ -355,6 +423,7 @@ function randomAmenities(duration) {
 
 function generateTickets(flight) {
     let tickets = []
+    let prices = generatePrice()
     // Create All First Class Tickets
     flight.plane.sections.first_class.rows.forEach((row, index) => {
         row.forEach((seat) => {
@@ -368,14 +437,11 @@ function generateTickets(flight) {
                     flight_class: 'first',
                     seat: {
                         isle: seat.letter,
-                        number: index+1
+                        number: index + 1
                     },
                     boarding_zone: generateBoardingZone(),
-                    price: generatePrice('first'),
-                    passenger: {
-                        first_name: '',
-                        last_name: ''
-                    }
+                    price: prices.first,
+                    passenger: generatePassenger()
                 }
     
                 tickets.push(ticket);
@@ -395,14 +461,11 @@ function generateTickets(flight) {
                     flight_class: 'preferred',
                     seat: {
                         isle: seat.letter,
-                        number: index+1
+                        number: index + flight.plane.sections.first_class.total_rows + 1
                     },
                     boarding_zone: generateBoardingZone(),
-                    price: generatePrice('preferred'),
-                    passenger: {
-                        first_name: '',
-                        last_name: ''
-                    }
+                    price: prices.preferred,
+                    passenger: generatePassenger()
                 }
     
                 tickets.push(ticket);
@@ -421,14 +484,11 @@ function generateTickets(flight) {
                     flight_class: 'economy',
                     seat: {
                         isle: seat.letter,
-                        number: index+1
+                        number: index + flight.plane.sections.first_class.total_rows + flight.plane.sections.preferred_class.total_rows + 1
                     },
                     boarding_zone: generateBoardingZone(),
-                    price: generatePrice('economy'),
-                    passenger: {
-                        first_name: '',
-                        last_name: ''
-                    }
+                    price: prices.economy,
+                    passenger: generatePassenger()
                 }
     
                 tickets.push(ticket);
@@ -474,21 +534,136 @@ function generateBoardingZone() {
     return letters[Math.floor(Math.random() * letters.length)] + number
 }
 
-function generatePrice(flight_class) {
+function generatePrice() {
     let price = 0;
     price = Math.floor((75 + Math.random() * 205))
+    let e = price
+    let p = price += Math.floor((100 + Math.random() * 215))
+    let f = price += Math.floor((350 + Math.random() * 510))
 
-    if(flight_class === 'economy') {
-        return price
+    let prices = {
+        economy: e,
+        preferred: p,
+        first: f
     }
 
-    if(flight_class === 'preferred') {
-        price += Math.floor((100 + Math.random() * 215))
-        return price
-    }
+    return prices
+}
 
-    if(flight_class === 'first') {
-        price += Math.floor((350 + Math.random() * 510))
-        return price
+function generatePassenger() {
+    let random_names = [
+        'Eilene Raya',
+        'Elia Bologna',
+        'Joie Brauer',
+        'Lynnette Pridgeon',
+        'Valorie Lytch',
+        'Jack Kilmer',
+        'Adria Backus',
+        'Ian Rainville',
+        'Rodolfo Beachum',
+        'Gaynelle Meek',
+        'Jen Davalos',
+        'Miyoko Pompa',
+        'Chang Murdock',
+        'Tennille Grundy',
+        'Tanner Cerrone',
+        'Spring Shahan',
+        'Talia Narvaez',
+        'Al Sheller',
+        'Pierre Nicklas',
+        'Margherita Kluck',
+        'Tressa Grider',
+        'Cira Dustin',
+        'Otilia Oyer',
+        'Consuelo Cooks',
+        'Cheri Newhard',
+        'Shawnna Caya',
+        'Vincenza Passman',
+        'Mercedes Barry',
+        'Kandy Fahnestock',
+        'Corey Heckler',
+        'Lia Tiggs',
+        'Randell Ney ', 
+        'Herschel Holter ', 
+        'Ela Strassburg',  
+        'Shonda Niemiec', 
+        'Quinn Sandage',  
+        'Georgann Worrall',
+        'Latosha Finkbeiner',
+        'Samantha Wilkinson',
+        'Mica Enger',
+        'Esmeralda Dominquez',
+        'Yuonne Coppa',
+        'Carlee Dolson',
+        'Sarah Knaack',
+        'Ismael Brimmer',
+        'Rolland Hosler',
+        'Sondra Witman',
+        'Cherie Beringer',
+        'Shawanda Ballweg',
+        'Lashawnda Tester',
+        'Gil Lollis',
+        'Noma Gillock',
+        'Marianne Cunningham',
+        'Jerilyn Pon',
+        'Ami Festa',
+        'Timothy Moffett',
+        'Xochitl Wirt',
+        'Lyndsay Helmers',
+        'Aracely Helzer',
+        'Jettie Samples',
+        'Lakeesha Klingman',
+        'Mickie Letourneau',
+        'Burl Sutter',
+        'Tajuana Mckie',
+        'Beatrice Vines',
+        'Tonya Petro',
+        'Trudie Schuette',
+        'Charlotte Kissel',
+        'Eboni Purser',
+        'Edward Mcduffie',
+        'Delisa Boateng',
+        'Nettie Mynatt',
+        'Omar Renner',
+        'Chantelle Holderman',
+        'Sage Cosper',
+        'Joellen Emrick',
+        'Darin Cuffie',
+        'Daina Laning',
+        'Stefan Benes',
+        'Yukiko Jacinto',
+        'Adalberto Stahl',
+        'Jada Bruce',
+        'Stewart Southwell',
+        'Cicely Mccalley',
+        'Sharolyn Theriot',
+        'Annita Mcbay',
+        'Blanch Mire',
+        'Demetrice Marquez',
+        'Spring Traver',
+        'Hester Landgraf',
+        'Mildred Schuler',
+        'Adria Carini',
+        'Tammi Weatherman',
+        'Joel Lengyel',
+        'Annabell Conkle',
+        'Shameka Cray',
+        'Julianna Siewert',
+        'Ettie Enders',
+        'Caleb Angstadt',
+        'Carey Celentano',
+
+    ]
+    let random_first = random_names.map(name => name.split(" ")[0])
+    let random_last = random_names.map(name => name.split(" ")[1])
+
+    if(Math.random() > 0.4) {
+        // Random Person
+        return {
+            first_name: random_first[Math.floor(Math.random() * random_first.length)],
+            last_name: random_last[Math.floor(Math.random() * random_last.length)]
+        }
+    } else {
+        return {first_name: '', last_name: ''}
     }
 }

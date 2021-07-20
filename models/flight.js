@@ -722,6 +722,10 @@ const flightSchema = new Schema({
         type: Date,
         required: true
     },
+    departure_date: {
+        type: String,
+        required: true
+    },
     duration: {
         hours: {
             type: Number,

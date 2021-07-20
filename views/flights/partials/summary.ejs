@@ -2,7 +2,7 @@
     <div class="uk-card-header mf-summary-header uk-flex uk-flex-between uk-flex-middle">
         <h4 class="uk-margin-remove mf-summary-title">Outbound</h4>
         <p class="mf-summary-origin-destination"><small><%= data[0].number %></small><br /><%= data[0].origin.code %> <span uk-icon="icon: triangle-right; ratio: 0.7"></span> <%= data[0].destination.code %></p>
-        <h4 class="uk-margin-remove mf-summary-date"><%= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][data[0].departure.getMonth()] %> <%= data[0].departure.getDay()%>, <%= data[0].departure.getFullYear()%></h4>
+        <h4 class="uk-margin-remove mf-summary-date"><%= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][data[0].departure.getMonth()] %> <%= data[0].departure.getDate()%>, <%= data[0].departure.getFullYear()%></h4>
         <h4 class="uk-margin-remove mf-summary-time">
             <% let hours = data[0].departure.getHours() %>
             <% let minutes = data[0].departure.getMinutes() %>
@@ -141,7 +141,7 @@
         <div class="uk-card-header mf-summary-header uk-flex uk-flex-between uk-flex-middle">
             <h4 class="uk-margin-remove mf-summary-title">Return</h4>
             <p class="mf-summary-origin-destination"><small><%= data[1].number %></small><br /><%= data[1].origin.code %> <span uk-icon="icon: triangle-right; ratio: 0.7"></span> <%= data[1].destination.code %></p>
-            <h4 class="uk-margin-remove mf-summary-date"><%= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][data[1].departure.getMonth()] %> <%= data[1].departure.getDay()%>, <%= data[1].departure.getFullYear()%></h4>
+            <h4 class="uk-margin-remove mf-summary-date"><%= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][data[1].departure.getMonth()] %> <%= data[1].departure.getDate()%>, <%= data[1].departure.getFullYear()%></h4>
             <h4 class="uk-margin-remove mf-summary-time">
                 <% let hours = data[1].departure.getHours() %>
                 <% let minutes = data[1].departure.getMinutes() %>

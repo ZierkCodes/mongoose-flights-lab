@@ -23,7 +23,7 @@
                             <p class="uk-text-primary uk-text-small uk-margin-remove"><%= flight.number %> <span class="uk-text-muted mf-model"><%= flight.plane.name %></span></p>
                         </div>
                         <div>
-                            <p class="uk-text-small uk-margin-remove uk-text-right uk-text-secondary"><%= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][flight.departure.getMonth()] %> <%= flight.departure.getDay()%>, <%= flight.departure.getFullYear()%></p>
+                            <p class="uk-text-small uk-margin-remove uk-text-right uk-text-secondary"><%= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][flight.departure.getMonth()] %> <%= flight.departure.getDate()%>, <%= flight.departure.getFullYear()%></p>
                             <p class="uk-text-small uk-margin-remove uk-text-right"><%= flight.duration.hours %>h <%= flight.duration.minutes %>m</p>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                     <% if(query.flight_type === 'Return') { %>
                         <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/summary?trip_type=round-trip&passengers=<%= query.passengers %>&outbound_flight=<%= query.outbound_flight %>&outbound_class=<%= query.outbound_class %>&return_flight=<%= flight.number %>&return_class=preferred'">Select</button>
                     <% } else { %>
-                        <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=preferred&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>'">Select</button>
+                        <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=preferred&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>&return_date=<%=query.return_date%>'">Select</button>
                     <% } %>
                 <% } else { %>
                     <button class="uk-button uk-button-primary mf-select-button" onclick="location.href='/flights/summary?class=preferred&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=one-way'">Select</button>
