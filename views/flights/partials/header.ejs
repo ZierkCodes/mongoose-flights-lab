@@ -1,3 +1,7 @@
+<% if(!active) { %>
+  <% let active = 'search-flights' %>
+<% } %>
+
 <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky;">
     <nav class="uk-navbar-container mf-navbar" uk-navbar style="position: relative; z-index: 980;">
       <div class="uk-navbar-left">
@@ -8,9 +12,16 @@
         
       <div class="uk-navbar-right">
           <ul class="uk-navbar-nav">
-              <li class="uk-active"><a href="#">Search Flights</a></li>
-              <li><a href="#">Flight Lookup</a></li>
-              <li><a href="#">Login</a></li>
+              <% if(active === 'search-flights') { %>
+                <li class="uk-active"><a href="/">Search Flights</a></li>
+                <li><a href="/itinerary">Find Itinerary</a></li>
+              <% } else if(active === 'find-itinerary') { %>
+                <li><a href="/">Search Flights</a></li>
+                <li class="uk-active"><a href="/itinerary">Find Itinerary</a></li>
+              <% } else { %>
+                <li><a href="/">Search Flights</a></li>
+                <li><a href="/itinerary">Find Itinerary</a></li>
+              <% } %>
           </ul>
       </div>
     </nav>

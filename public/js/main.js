@@ -1,5 +1,38 @@
 import { DateRangePicker } from '../js/node_modules/vanillajs-datepicker/js/main.js'
 
+if(window.location.href.indexOf('/itinerary') > -1) {
+  let submit = document.querySelector('#lookup-itinerary')
+  let form = document.querySelector('#itinerary')
+  let confirmation_number = document.querySelector('#confirmation_number')
+  
+  submit.addEventListener('click', () => {
+    console.log(confirmation_number.value)
+    if(confirmation_number.value.length > 3) {
+      form.action = `/flights/confirmation/${confirmation_number.value}`
+      form.submit()
+    } else {
+      let error_elem = document.querySelector('#error-container')
+
+      let alert = document.createElement('div')
+      alert.classList.add('uk-alert-danger')
+      alert.setAttribute('uk-alert', '')
+      
+      let closeBtn = document.createElement('a')
+      closeBtn.classList.add('uk-alert-close')
+      closeBtn.setAttribute('uk-close', '')
+
+      let error = document.createElement('p')
+      error.innerHTML = '<b>ERROR:</b> Please enter your confirmation number. (XYZ1234)'
+
+      alert.appendChild(closeBtn)
+      alert.appendChild(error)
+      error_elem.appendChild(alert)
+      
+      error_elem.removeAttribute('hidden')
+    }
+  })
+}
+
 const dates = document.getElementById('dates');
 if(dates) {
   const rangepicker = new DateRangePicker(dates, {
@@ -7,17 +40,45 @@ if(dates) {
   }); 
 }
 
+/* Origin / Destination Functionality */
+const create_flights_link = document.querySelector('#create-flights-link')
+if(create_flights_link) {
+  const form = document.querySelector('#create-flights-form')
+  create_flights_link.addEventListener('click', () => {
+    form.submit()
+    UIkit.modal.dialog('<div class="uk-padding uk-flex uk-flex-column uk-flex-center uk-text-center"><span uk-spinner="ratio: 4.5"></span><h3 class="uk-text-primary">We are creating your flights!</h3><p class="uk-margin-remove uk-text-muted">When finished, you will be redirected back to the home page.</p></div>');
+  })
+}
+
 /* Search */
 const searchFlightsBtn = document.querySelector('#search-flights')
 if(searchFlightsBtn) {
-  searchFlightsBtn.addEventListener('click', (e) => {
-    let origin_elem = document.querySelector('#origin')
-    let destination_elem = document.querySelector('#destination')
-    let passengers_elem = document.querySelector('#passengers')
-    let departure_date_elem = document.querySelector('#departure_date')
-    let return_date_elem = document.querySelector('#return_date')
-    let trip_type_elem = document.querySelector('#trip_type')
+  let origin_elem = document.querySelector('#origin')
+  let destination_elem = document.querySelector('#destination')
+  let passengers_elem = document.querySelector('#passengers')
+  let departure_date_elem = document.querySelector('#departure_date')
+  let return_date_elem = document.querySelector('#return_date')
+  let trip_type_elem = document.querySelector('#trip_type')
+  let origin_text = document.querySelector('#origin-text')
+  let destination_text = document.querySelector('#destination-text')
 
+  origin_elem.addEventListener('keyup', (e) => {
+    origin_text.innerText = origin_elem.value
+    if(origin_elem.value === '') {
+      origin_text.innerText = 'From'
+    }
+  })
+
+  destination_elem.addEventListener('keyup', (e) => {
+    destination_text.innerText = destination_elem.value
+    if(destination_elem.value === '') {
+      destination_text.innerText = 'To'
+    }
+  })
+
+
+
+  searchFlightsBtn.addEventListener('click', (e) => {
     if(!origin_elem.value || !destination_elem.value || !passengers_elem.value || !departure_date_elem.value || !trip_type_elem.value) {
       let error_elem = document.querySelector('#error-container')
 

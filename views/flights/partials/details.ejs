@@ -2,7 +2,12 @@
     <div class="uk-container">
         <header class="uk-flex uk-flex-column ux-flex-top uk-margin-small-bottom">
             <h2 class="uk-text-normal"><%= query.flight_type %> Flight <span class="uk-text-light"><%= query.origin %><span class="uk-text-primary" uk-icon="icon: arrow-right; ratio: 2"></span><%= query.destination %></span></h2>
-            
+            <% if (data.length === 0) { %> 
+                        <div class="uk-alert-danger" uk-alert>
+                            <a class="uk-alert-close" uk-close></a>
+                            <form id="create-flights-form" method="POST" action="/flights/create"><p class="uk-margin-remove">No flights were found matching your dates. (If you are having trouble finding a flight, you can generate 200 random new flights by clicking <a id="create-flights-link"><b>here</b></a>.)</p></form>
+                        </div>
+            <% } %>
             <!-- <div class="uk-flex uk-flex-center">
                 <h2 class="uk-text-light uk-margin-right">Saturday <span class="uk-text-primary uk-text-normal">Aug 23</span></h2>
                 <div><a href="#"><span uk-icon="icon: settings"></span></a></div>
@@ -194,6 +199,8 @@
         <% }) %>
         <% } %>
         <!-- END FLIGHT INFO -->
+
+
 
         <!-- UNAVAILABLE CARD -->
         <!-- <div class="uk-width-1-5 mf-class-options uk-padding first uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-flex-space-around">

@@ -17,7 +17,7 @@
 
           <a class="mf-airport-modal-button" uk-toggle="target: #from" href="#">
             <div class="uk-margin-small-top">
-              <h3 class="uk-card-title uk-margin-remove uk-padding-top uk-text-center">From</h3>
+              <h3 id="origin-text" class="uk-card-title uk-margin-remove uk-padding-top uk-text-center">From</h3>
               <p class="uk-text-meta uk-margin-remove uk-text-center">Origin</p>
             </div>
           </a>
@@ -28,7 +28,7 @@
 
           <a class="mf-airport-modal-button" uk-toggle="target: #to"  href="#">
             <div class="uk-margin-small-top">
-              <h3 class="uk-card-title uk-margin-remove uk-padding-top uk-text-center">To</h3>
+              <h3 id="destination-text" class="uk-card-title uk-margin-remove uk-padding-top uk-text-center">To</h3>
               <p class="uk-text-meta uk-margin-remove uk-text-center">Destination</p>
             </div>
           </a>
@@ -94,7 +94,8 @@
         <fieldset class="uk-fieldset">
             <legend class="uk-legend">Departing From:</legend>
             <div class="uk-margin">
-                <input id="origin" class="uk-input" type="text" placeholder="Airport ID or City">
+                <input id="origin" class="uk-input" type="text" placeholder="Airport ID">
+                <small class="uk-text-muted">Available Airports: AUS, DEN, DFW, ATL, SAN, LAX</small>
             </div>
       </form>
   </div>
@@ -106,7 +107,8 @@
       <fieldset class="uk-fieldset">
           <legend class="uk-legend">Arriving At:</legend>
           <div class="uk-margin">
-              <input id="destination" class="uk-input" type="text" placeholder="Airport ID or City">
+              <input id="destination" class="uk-input" type="text" placeholder="Airport ID">
+              <small class="uk-text-muted">Available Airports: AUS, DEN, DFW, ATL, SAN, LAX</small>
           </div>
     </form>
   </div>

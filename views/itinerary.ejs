@@ -1,0 +1,79 @@
+<%- include("head.ejs") %> 
+<body>
+  
+  <div class="uk-cover-container uk-container-expand " uk-height-viewport="expand: true">
+    <img src="../img/background.jpeg" alt="" uk-cover>
+
+    <%- include("flights/partials/header.ejs") %>
+
+    <div id="error-container" class="uk-container uk-margin" hidden>
+      
+    </div>
+    
+
+    <div class="uk-flex uk-flex-center uk-flex-middle" uk-height-viewport="expand: true">
+      <div class="uk-card uk-card-default uk-card-body uk-width-5-6">
+        <form id="itinerary" class="uk-form uk-flex uk-flex-column" method="GET">
+          <div class="uk-width-4-4"><h2>Find Your Itinerary</h2></div>
+          <div class="uk-width-4-4 uk-flex uk-flex-row uk-flex-between uk-flex-bottom">
+
+            <div class="uk-margin-right uk-width-expand">
+              <label class="uk-form-label" for="confirmation_number">Confirmation Number</label>
+              <div class="uk-form-controls">
+                  <input class="uk-input" id="confirmation_number" name="confirmation_number" type="text" placeholder="ABC1234">
+              </div>
+            </div>
+  
+            <div class="uk-margin-right uk-width-expand">
+              <label class="uk-form-label" for="first_name">First Name</label>
+              <div class="uk-form-controls">
+                  <input class="uk-input" id="first_name" type="text" placeholder="First Name">
+              </div>
+            </div>
+  
+            <div class="uk-margin-right uk-width-expand">
+              <label class="uk-form-label" for="last_name">Last Name</label>
+              <div class="uk-form-controls">
+                  <input class="uk-input" id="last_name" type="text" placeholder="Last Name">
+              </div>
+            </div>
+  
+            <div class="uk-margin-remove">
+              <button id="lookup-itinerary" class="uk-button uk-button-primary uk-padding-remove" style="padding: 0px 10px !important" type="button"><span uk-icon="arrow-right"></span></button>
+              <!-- <button type="button" style="padding: 0px 10px !important" class="uk-button uk-button-primary uk-padding-remove"><span uk-icon="arrow-right"></span></button> -->
+            </div>
+          </div>
+          
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+<div id="from" class="uk-flex-top" uk-modal>
+  <div class="uk-modal-dialog uk-margin-auto-vertical uk-modal-body">
+      <h2 class="uk-modal-title"></h2>
+      <form>
+        <fieldset class="uk-fieldset">
+            <legend class="uk-legend">Departing From:</legend>
+            <div class="uk-margin">
+                <input id="origin" class="uk-input" type="text" placeholder="Airport ID or City">
+            </div>
+      </form>
+  </div>
+</div>
+
+<div id="to" uk-modal>
+  <div class="uk-modal-dialog uk-margin-auto-vertical uk-modal-body">
+    <form>
+      <fieldset class="uk-fieldset">
+          <legend class="uk-legend">Arriving At:</legend>
+          <div class="uk-margin">
+              <input id="destination" class="uk-input" type="text" placeholder="Airport ID or City">
+          </div>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

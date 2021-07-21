@@ -14,7 +14,8 @@ export {
     selectOneWaySeats,
     selectRoundTripSeats,
     purchaseTickets,
-    getConfirmation
+    getConfirmation,
+    getItinerary
  }
 
  const flight_fields = ['number', 'airline', 'plane', 'origin', 'destination', 'departure', 'duration', 'gate', 'amenities', 'tickets']
@@ -22,8 +23,16 @@ export {
 /**
  * This create method will automagically create a flight with all the required data at the click of a button! =) 
  */
-function createFlight(req, res) {
-    for(let i = 0; i < 2000; i++) {
+async function createFlight(req, res) {
+    create_flights().then(() => {
+        console.log('done')
+        res.redirect('/')
+    })
+}
+
+const create_flights = async() => {
+    let flights_array = [];
+    for(let i = 0; i < 100; i++) {
         let airline = randomAirline();
         let origin = randomAirport();
         let destination = randomDestination(origin.code);
@@ -52,25 +61,44 @@ function createFlight(req, res) {
         flight.set({
             tickets: tickets
         })
-    
+
+        flights_array.push(flight)
+    }
+
+    for(let flight of flights_array) {
+        const record = await returnFlight(flight)
+        if(record) {
+            console.log(record.number)
+        }
+        
+    }
+}
+
+const returnFlight = flight => {
+    return new Promise((resolve, reject) => {
         Flight.find({$or:[{number: flight.number}]}, function(error, records) {
             if(records.length) {
+                console.log("Similar flight already exists")
+                resolve()
                 // res.send('A similar flight already exists. Try creating a new one.')
             } else {
-                flight.save(function (error, flight) {
+                flight.save(function (error, result) {
                     if(error) {
                         // return res.send(error)
-                        console.log(error)
+                        console.log("ERROR:" + error)
+                        resolve()
                     } else {
                         // return res.send(flight._id)
-                        console.log('OK')
-                        console.log(flight._id)
+                        resolve(result)
                     }
                 })
             }
         })
-    }
-    
+    })
+}
+
+function getItinerary(req, res, next) {
+    //
 }
 
 function getConfirmation(req, res, next) {
@@ -89,7 +117,7 @@ function getConfirmation(req, res, next) {
             query.trip_type = 'round-trip'
             query.outbound_class = data[0].tickets.find(ticket => ticket.confirmation_number === req.params.confirmation_number).flight_class
             query.return_class = data[1].tickets.find(ticket => ticket.confirmation_number === req.params.confirmation_number).flight_class
-        } if(data[0].tickets) {
+        } if(data[0] !== undefined) {
             query.outbound_class = data[0].tickets.find(ticket => ticket.confirmation_number === req.params.confirmation_number).flight_class
         } else {
             query.outbound_class = data.tickets.find(ticket => ticket.confirmation_number === req.params.confirmation_number).flight_class
@@ -131,7 +159,7 @@ function getConfirmation(req, res, next) {
 
         query.tickets = tickets_array
         
-        res.render('flights/confirmation', {activePage: 'confirmation', data: data, query: query})
+        res.render('flights/confirmation', {active: 'search-flights', activePage: 'confirmation', data: data, query: query})
     })
     // res.render('flights/confirmation', {activePage: 'confirmation'})
 }
@@ -242,7 +270,7 @@ function selectOneWaySeats(req, res, next) {
     let promise = results.exec()
 
     promise.then((data) => {
-        res.render('flights/seats', {data: data, query: {
+        res.render('flights/seats', {active: 'search-flights', data: data, query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.outbound_flight,
             outbound_class: req.query.outbound_class,
@@ -263,7 +291,7 @@ function selectRoundTripSeats(req, res, next) {
     let promise = results.exec()
 
     promise.then((data) => {
-        res.render('flights/seats', {data: data.reverse(), query: {
+        res.render('flights/seats', {active: 'search-flights', data: data.reverse(), query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.outbound_flight,
             outbound_class: req.query.outbound_class,
@@ -286,7 +314,7 @@ function checkOutTrip(req, res, next) {
     let promise = results.exec()
 
     promise.then((data) => {
-        res.render('flights/payment', {activePage: 'review-and-pay', data: data, query: {
+        res.render('flights/payment', {active: 'search-flights', activePage: 'review-and-pay', data: data, query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.outbound_flight,
             outbound_class: req.query.outbound_class,
@@ -301,7 +329,7 @@ function checkOutRoundTrip(req, res, next) {
     let promise = results.exec()
     promise.then((data) => {
         data = data.reverse()
-        res.render('flights/payment', {activePage: 'review-and-pay', data: data, query: {
+        res.render('flights/payment', {active: 'search-flights', activePage: 'review-and-pay', data: data, query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.outbound_flight,
             outbound_class: req.query.outbound_class,
@@ -326,7 +354,7 @@ function getOneWaySummary(req, res, next) {
     let promise = results.exec()
 
     promise.then((data) => {
-        res.render('flights/summary', {activePage: 'trip-summary', data: data, query: {
+        res.render('flights/summary', {active: 'search-flights', activePage: 'trip-summary', data: data, query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.flight,
             outbound_class: req.query.class,
@@ -340,7 +368,7 @@ function getRoundTripSummary(req, res, next) {
     let promise = results.exec()
     promise.then((data) => {
         data = data.reverse()
-        res.render('flights/summary', {activePage: 'trip-summary', data: data, query: {
+        res.render('flights/summary', {active: 'search-flights', activePage: 'trip-summary', data: data, query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.outbound_flight,
             outbound_class: req.query.outbound_class,
@@ -370,7 +398,7 @@ function queryReturnFlights(req, res) {
     console.log("???")
     
     promise.then((data) => {
-        res.render('flights/flights', {data: data, query: {
+        res.render('flights/flights', {active: 'search-flights', data: data, query: {
             flight_type: 'Return',
             trip_type: req.query.trip_type,
             origin: req.query.return_origin,
@@ -412,7 +440,7 @@ function queryOutboundFlights(req, res, next) {
         promise.then((data) => {
             // Sort the flights
             data.sort((a, b) => { a.departure - b.departure })
-            return res.render('flights/flights', {data, query: {
+            return res.render('flights/flights', {active: 'search-flights', data, query: {
                 flight_type: 'Outbound',
                 origin: req.query.origin,
                 destination: req.query.destination,
