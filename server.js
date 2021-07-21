@@ -22,12 +22,23 @@ const mode = process.env.NODE_ENV
 connectDB()
 const app = express()
 
+app.use(methodOverride("_method"));
+
 // view engine setup
 app.set(
   'views',
   path.join(path.dirname(fileURLToPath(import.meta.url)), 'views')
 )
+
 app.set('view engine', 'ejs')
+
+
+// app.use((req,res,next)=>{
+//   if(req.headers['x-http-method-override']){
+//       req.method = req.headers['x-http-method-override'];
+//   }
+//   next();
+// });
 
 app.use(logger('dev'))
 app.use(express.json())
@@ -37,6 +48,10 @@ app.use(express.static(
     path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
   )
 )
+app.use('/flights', express.static(
+  path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
+))
+
 
 
 app.use('/', indexRouter)
@@ -45,10 +60,12 @@ app.use('/flights', flightsRouter)
 app.use('/summary', summaryRouter)
 app.use('/checkout', checkoutRouter)
 
+
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404))
-})
+// app.use(function (req, res, next) {
+//   next(createError(404))
+// })
+
 
 // error handler
 app.use(function (err, req, res, next) {

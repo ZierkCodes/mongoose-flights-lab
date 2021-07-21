@@ -8,10 +8,14 @@
                 <div><a href="#"><span uk-icon="icon: settings"></span></a></div>
             </div> -->
         </header>
-
+        <!-- data.forEach((flight)-->
         <!-- START FLIGHT INFO -->
+        
+        <% console.log(data) %>
+        
+        
+        <% if(data) { %>
         <% data.forEach((flight) => { %>
-
         <div class="uk-card uk-card-default uk-card-body uk-width-5-5 uk-flex uk-flex-between uk-padding-remove uk-margin-large-bottom">
             <!-- <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div> -->
             <div class="uk-width-2-5">
@@ -147,7 +151,7 @@
                     <% if(query.flight_type === 'Return') { %>
                         <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/summary?trip_type=round-trip&passengers=<%= query.passengers %>&outbound_flight=<%= query.outbound_flight %>&outbound_class=<%= query.outbound_class %>&return_flight=<%= flight.number %>&return_class=economy'">Select</button>
                     <% } else { %>
-                        <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=economy&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>'">Select</button>
+                        <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=economy&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>&return_date=<%=query.return_date%>'">Select</button>
                     <% } %>
                 <% } else { %>
                     <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/summary?class=economy&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=one-way'">Select</button>
@@ -179,7 +183,7 @@
                     <% if(query.flight_type === 'Return') { %>
                         <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/summary?trip_type=round-trip&passengers=<%= query.passengers %>&outbound_flight=<%= query.outbound_flight %>&outbound_class=<%= query.outbound_class %>&return_flight=<%= flight.number %>&return_class=first'">Select</button>
                     <% } else { %>
-                        <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=first&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>'">Select</button>
+                        <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/?flight_type=return&outbound_class=first&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=round-trip&return_origin=<%= query.destination %>&return_destination=<%= query.origin %>&return_date=<%=query.return_date%>'">Select</button>
                     <% } %>
                 <% } else { %>
                     <button class="uk-button uk-button-default mf-select-button" onclick="location.href='/flights/summary?class=first&passengers=<%= query.passengers %>&flight=<%= flight.number %>&trip_type=one-way'">Select</button>
@@ -187,8 +191,8 @@
             </div>
         </div>
         <!-- MUST ADD CONDITIONALS FOR RETURN BTNS-->
-                
         <% }) %>
+        <% } %>
         <!-- END FLIGHT INFO -->
 
         <!-- UNAVAILABLE CARD -->

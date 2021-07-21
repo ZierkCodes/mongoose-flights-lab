@@ -158,8 +158,8 @@
                                     <% for(var x = 0; x < data[0].tickets.length; x++) {
                                         
                                         if(data[0].tickets[x].seat.isle === seat.letter && data[0].tickets[x].flight_class === 'economy' && (index + data[0].plane.sections.first_class.total_rows + data[0].plane.sections.preferred_class.total_rows + 1) === (data[0].tickets[x].seat.number)) {
-                                        
                                             if(data[0].tickets[x].passenger.first_name === '') {
+                                                console.log(data[0].tickets[x].passenger.first_name)
                                                 occupied = false
                                             } else {
                                                 occupied = true
@@ -401,7 +401,7 @@
                                     <% } else { %>
                                         <% let occupied = null %>
                                         <% for(var x = 0; x < data[1].tickets.length; x++) {
-                                            if(data[1].tickets[x].seat.isle === seat.letter && data[1].tickets[x].flight_class === 'preferred' && (index + + data[1].plane.sections.first_class.total_rows + + data[1].plane.sections.preferred_class.total_rows + 1) === (data[1].tickets[x].seat.number)) {
+                                            if(data[1].tickets[x].seat.isle === seat.letter && data[1].tickets[x].flight_class === 'economy' && (index + + data[1].plane.sections.first_class.total_rows + + data[1].plane.sections.preferred_class.total_rows + 1) === (data[1].tickets[x].seat.number)) {
                                             
                                                 if(data[1].tickets[x].passenger.first_name === '') {
                                                     occupied = false

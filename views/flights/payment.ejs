@@ -1,7 +1,8 @@
 <%- include("../head.ejs") %> 
 <body>
     <%- include("partials/header.ejs") %>
-    
+
+<form id="checkout" method="POST" action="/flights/purchase/?_method=PUT">
     <div class="uk-section uk-section-muted">
         <div class="uk-container uk-flex uk-flex-between uk-margin">
             <h1 class="uk-text-light">Review and Pay</h1>
@@ -26,11 +27,11 @@
                             
                             <p class="uk-margin-remove">View a map of the plane and select your seats.</p>
                             <% if (query.trip_type === 'round-trip') { %>
-                                <button class="uk-button uk-button-default uk-button-large" onclick="window.location.href='<%=`/flights/seats?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}&return_flight=${query.return_flight}&return_class=${query.return_class}`%>'">Select Seats</button>
+                                <a class="uk-button uk-button-default uk-button-large" onclick="window.location.href='<%=`/flights/seats?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}&return_flight=${query.return_flight}&return_class=${query.return_class}`%>'">Select Seats</a>
     
                             <% } else { %>
                                 
-                                <button class="uk-button uk-button-default uk-button-large" onclick="window.location.href='<%=`/flights/seats?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}`%>'">Select Seats</button>
+                                <a class="uk-button uk-button-default uk-button-large" href="<%=`/flights/seats?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}`%>">Select Seats</a>
                             <% } %>
                         </div>
                     <% } else { %>
@@ -65,11 +66,11 @@
                 <% if(query.outbound_seats) { %>
                 <div class="uk-card-footer">
                     <% if (query.trip_type === 'round-trip') { %>
-                        <button class="uk-button uk-button-default uk-button-large uk-align-right" onclick="window.location.href='<%=`/flights/seats?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}&return_flight=${query.return_flight}&return_class=${query.return_class}`%>'">Change Seats</button>
+                        <a class="uk-button uk-button-default uk-button-large uk-align-right" href="<%=`/flights/seats?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}&return_flight=${query.return_flight}&return_class=${query.return_class}`%>">Change Seats</a>
 
                     <% } else { %>
                         
-                        <button class="uk-button uk-button-default uk-button-large uk-align-right" onclick="window.location.href='<%=`/flights/seats?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}`%>'">Change Seats</button>
+                        <a class="uk-button uk-button-default uk-button-large uk-align-right" href="<%=`/flights/seats?trip_type=${query.trip_type}&passengers=${query.passengers}&outbound_flight=${query.outbound_flight}&outbound_class=${query.outbound_class}`%>">Change Seats</a>
                     <% } %>
                 </div>
                 <% } %>
@@ -88,24 +89,24 @@
                     <p class="uk-margin-remove uk-text-bold">Passenger <%= i+1 %></p>
                     <small>All fields required unless noted</small>
 
-                    <form class="mf-passenger-form uk-margin">
+                    <div class="mf-passenger-form uk-margin">
                         <div class="mf-row uk-flex uk-flex-between uk-grid-small">
                             <div class="uk-width-1-3@s">
-                                <label class="uk-form-label" for="passenger-1-first-name">First Name</label>
+                                <label class="uk-form-label" for="fname-<%= i %>">First Name</label>
                                 <div class="uk-form-controls">
-                                    <input class="uk-input" id="passenger-1-first-name" type="text" placeholder="First Name" required>
+                                    <input class="uk-input" id="fname-<%= i %>" name="fname-<%= i %>" type="text" placeholder="First Name" required>
                                 </div>
                             </div>
                             <div class="uk-width-1-3@s">
-                                <label class="uk-form-label" for="passenger-1-middle-name">Middle Name <small class="uk-text-muted">(optional)</small></label>
+                                <label class="uk-form-label">Middle Name <small class="uk-text-muted">(optional)</small></label>
                                 <div class="uk-form-controls">
-                                    <input class="uk-input" id="passenger-1-middle-name" type="text" placeholder="Middle Name">
+                                    <input class="uk-input" type="text" placeholder="Middle Name">
                                 </div>
                             </div>
                             <div class="uk-width-1-3@s">
-                                <label class="uk-form-label" for="passenger-1-last-name">Last Name</label>
+                                <label class="uk-form-label" for="lname-<%= i %>">Last Name</label>
                                 <div class="uk-form-controls">
-                                    <input class="uk-input" id="passenger-1-last-name" type="text" placeholder="Last Name" required>
+                                    <input class="uk-input" id="lname-<%= i %>" name="lname-<%= i %>" type="text" placeholder="Last Name" required>
                                 </div>
                             </div>
                         </div>
@@ -186,10 +187,11 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
             <% } %>
+            </form>
             <!-- End Loop -->
 
             <!-- CONTACT INFO - NOT IN LOOP - JUST ONE -->
@@ -283,7 +285,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    
 
 
 
@@ -324,7 +326,7 @@
                             </h5>
                             <% let outbound_tickets = [] %>
                             <% let outbound_total = 0 %>
-                            <% let outbouond_ticket_price = 0 %>
+                            <% let outbound_ticket_price = 0 %>
                             <% let outbound_seats_array = query.outbound_seats.split(',') %>
                             <% for( let index = 0; index < query.passengers; index++ ) { %>
                                 <% let tickets = data[0].tickets.filter(t => {
@@ -343,6 +345,7 @@
                                 }) %>
                                 
                             <% } %>
+                            <% console.log(outbound_ticket_price) %>
                             <h5 class="uk-text-light uk-margin-remove uk-width-1-4">$<%= outbound_ticket_price %><span class="uk-text-muted"> x<%= query.passengers %></span></h5>
                             <h3 class="uk-margin-remove uk-width-1-4 uk-text-right">$<%= outbound_total %></h3>
                         </div>
@@ -406,25 +409,52 @@
 
             <div class="uk-container uk-margin uk-flex uk-flex-right">
                 <% let ob_tracking_numbers = [] %>
+                <% let re_tracking_numbers = [] %>
+                <% let ob_flight_number %>
+                <% let re_flight_number %>
                 <% for(let i = 0; i < outbound_seats_array.length; i++){
-                    let the_ticket = data[0].tickets.filter((ticket) => {
-                        let ticket_seat = `${ticket.seat.isle}${ticket.seat.number}`
+                    for(let j = 0; j < data.length; j++) {
+                        data[j].tickets.filter((ticket) => {
+                            let ticket_seat = `${ticket.seat.isle}${ticket.seat.number}`
 
-                        if(ticket_seat === outbound_seats_array[i]) {
-                            if(ticket.passenger.first_name) {
-                                console.log(ticket.passenger.first_name)
-                            } else { 
-                                ob_tracking_numbers.push(ticket.tracking_number)
+                            if(j === 0) {
+                                ob_flight_number = data[j].number
+                                if(ticket_seat === outbound_seats_array[i]) {
+                                    if(ticket.passenger.first_name) {
+                                        console.log(ticket.passenger.first_name)
+                                    } else { 
+                                        ob_tracking_numbers.push(ticket.tracking_number)
+                                    }
+                                } 
+                            } else {
+                                re_flight_number = data[j].number
+                                if(ticket_seat === return_seats_array[i]) {
+                                    if(ticket.passenger.first_name) {
+                                        console.log(ticket.passenger.first_name)
+                                    } else { 
+                                        re_tracking_numbers.push(ticket.tracking_number)
+                                    }
+                                } 
                             }
-                        }                       
-                    })
+                                                  
+                        })
+                    }
                 } %>
-                <% console.log(data[0]._id) %>
-                <button class="uk-button uk-button-primary uk-button-large uk-margin-left" onclick="window.location.href='/flights/confirmation'">Complete Purchase</button>
+                <% console.log("TRACKING") %>
+                <% console.log(ob_tracking_numbers.toString()) %>
+                <% console.log(re_tracking_numbers.toString()) %>
+                <input type="text" id="ob_tracking_numbers" name="ob_tracking_numbers" value="<%= ob_tracking_numbers.toString() %>" form="checkout" hidden />
+                <input type="text" id="re_tracking_numbers" name="re_tracking_numbers" value="<%= re_tracking_numbers.toString() %>" form="checkout" hidden />
+                <input type="text" id="outbound_flight" name="outbound_flight" value="<%= ob_flight_number %>" form="checkout" hidden />
+                <input type="text" id="return_flight" name="return_flight" value="<%= re_flight_number %>" form="checkout" hidden />
+                <input type="number" id="total_passengers" name="total_passengers" value="<%= query.passengers %>" form="checkout" hidden />
+                
+                <button class="uk-button uk-button-primary uk-button-large uk-margin-left" type="submit" form="checkout">Complete Purchase</button>
             </div>
         </div>
         <% } %>
 
     </div>
+</form>
 </body>
 </html>

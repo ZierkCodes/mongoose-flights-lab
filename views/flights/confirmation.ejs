@@ -10,7 +10,7 @@
         </div>
 
         <div class="uk-container uk-flex uk-flex-between uk-margin">
-            <h1 class="uk-text-light">Confirmation <span class="uk-text-muted">#</span><span class="uk-text-bold uk-text-primary">XYZ1234</span></h1>
+            <h1 class="uk-text-light">Confirmation <span class="uk-text-muted">#</span><span class="uk-text-bold uk-text-primary"><%= query.confirmation_number %></span></h1>
             <%- include("partials/stepper.ejs") %>
         </div>
 
@@ -21,150 +21,45 @@
 
     <div class="uk-section uk-section-default mf-ticket-section uk-width-expand">
         <!-- START TICKET -->
-        <div id="ticket-1" class="uk-margin mf-ticket uk-flex uk-width-2-3 uk-align-center">
-            <div class="mf-ticket-primary uk-width-2-3">
-                <div class="mf-ticket-header uk-flex uk-flex-between">
-                    <div class="mf-ticket-flight">
-                        <p class="mf-ticket-small uk-text-muted">Flight</p>
-                        <p>Delta Airlines DL2442</p>
-                    </div>
-                    <div class="mf-ticket-destination">
-                        <p class="mf-ticket-small uk-text-muted">Destination</p>
-                        <p>ATL to AUS</p>
-                    </div>
-                    <div class="mf-ticket-passenger">
-                        <p class="mf-ticket-small uk-text-muted">Passenger</p>
-                        <p>Steiner / Garnett</p>
-                    </div>
-                </div>
-
-                <div class="mf-ticket-body">
-                    <div class="mf-ticket-passenger">
-                        <p class="mf-ticket-small uk-text-muted">Passenger</p>
-                        <p>Steiner / Garnett</p>
-                    </div>
-
-                    <div class="mf-ticket-flight-information uk-margin uk-flex uk-flex-between">
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Gate</p>
-                            <p class="mf-ticket-large">A22</p>
-                        </div>
-
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Departure</p>
-                            <p class="mf-ticket-large">8:15<span class="mf-ticket-medium"> AM 14 AUG 2021</span></p>
-                        </div>
-
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Boarding Zone</p>
-                            <p class="mf-ticket-large">D3</p>
-                        </div>
-                    </div>
-                    
-                    <hr>
-
-                    <div class="mf-ticket-flight-information uk-margin uk-flex uk-flex-between">
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Tracking</p>
-                            <p>2 207 365 3958 3309 0</p>
-                        </div>
-
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Data</p>
-                            <p>00 U78 D</p>
-                        </div>
-
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Options</p>
-                            <p>1st Cl</p>
-                        </div>
-
-                        <div>
-                            <p class="mf-barcode">2442ATLAUS</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mf-ticket-secondary uk-width-expand">
-                <div class="mf-ticket-header">
-                    <div class="mf-ticket-flight">
-                        <p class="mf-ticket-small uk-text-muted">Flight</p>
-                        <p>Delta Airlines DL2442</p>
-                    </div>
-                </div>
-
-                <div class="mf-ticket-body">
-                    <div class="mf-ticket-passenger">
-                        <p class="mf-ticket-small uk-text-muted">Passenger</p>
-                        <p>Steiner / Garnett</p>
-                    </div>
-
-                    <div class="mf-ticket-flight-information uk-margin uk-flex uk-flex-between">
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Seat</p>
-                            <p class="mf-ticket-large">3C</p>
-                        </div>
-
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Departure</p>
-                            <p class="mf-ticket-large">8:15</p>
-                        </div>
-                    </div>
-                    
-                    <hr>
-
-                    <div class="mf-ticket-flight-information uk-margin uk-flex uk-flex-between">
-                        <div>
-                            <p class="mf-ticket-small uk-text-muted">Options</p>
-                            <p>1st Cl</p>
-                        </div>
-
-                        <div>
-                            <p class="mf-barcode">2442ATLAUS</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END TICKET -->
-        <!-- START TICKET -->
+        <% for(var i = 0; i < query.tickets.length; i++) { %>
         <div class="uk-margin mf-ticket uk-flex uk-width-2-3 uk-align-center">
             <div class="mf-ticket-primary uk-width-2-3">
                 <div class="mf-ticket-header uk-flex uk-flex-between">
                     <div class="mf-ticket-flight">
                         <p class="mf-ticket-small uk-text-muted">Flight</p>
-                        <p>Delta Airlines DL1894</p>
+                        <p><%= query.tickets[i].flight_number %></p>
                     </div>
                     <div class="mf-ticket-destination">
                         <p class="mf-ticket-small uk-text-muted">Destination</p>
-                        <p>AUS to ATL</p>
+                        <p><%= query.tickets[i].origin %> to <%= query.tickets[i].destination %></p>
                     </div>
                     <div class="mf-ticket-passenger">
                         <p class="mf-ticket-small uk-text-muted">Passenger</p>
-                        <p>Steiner / Garnett</p>
+                        <p><%= query.tickets[i].passenger %></p>
                     </div>
                 </div>
 
                 <div class="mf-ticket-body">
                     <div class="mf-ticket-passenger">
                         <p class="mf-ticket-small uk-text-muted">Passenger</p>
-                        <p>Steiner / Garnett</p>
+                        <p><%= query.tickets[i].passenger %></p>
                     </div>
 
                     <div class="mf-ticket-flight-information uk-margin uk-flex uk-flex-between">
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Gate</p>
-                            <p class="mf-ticket-large">C14</p>
+                            <p class="mf-ticket-large"><%= query.tickets[i].gate %></p>
                         </div>
 
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Departure</p>
-                            <p class="mf-ticket-large">11:47<span class="mf-ticket-medium"> AM 19 AUG 2021</span></p>
+                            <!-- <p class="mf-ticket-large">8:15<span class="mf-ticket-medium"> AM 14 AUG 2021</span></p> -->
+                            <p class="mf-ticket-large"><%=`${query.tickets[i].departure.getHours()}:${query.tickets[i].departure.getMinutes() < 10 ? '0'+ query.tickets[i].departure.getMinutes() : query.tickets[i].departure.getMinutes()}`%><span class="mf-ticket-medium"><%=` ${query.tickets[i].departure.getHours() >= 12 ? 'PM' : 'AM'} ${query.tickets[i].departure.getDate()} ${["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][query.tickets[i].departure.getMonth()]} ${query.tickets[i].departure.getFullYear()}`%></span></p>
                         </div>
 
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Boarding Zone</p>
-                            <p class="mf-ticket-large">D1</p>
+                            <p class="mf-ticket-large"><%= query.tickets[i].boarding_zone %></p>
                         </div>
                     </div>
                     
@@ -173,21 +68,21 @@
                     <div class="mf-ticket-flight-information uk-margin uk-flex uk-flex-between">
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Tracking</p>
-                            <p>2 207 365 3958 3309 0</p>
+                            <p><%= query.tickets[i].tracking_number %></p>
                         </div>
 
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Data</p>
-                            <p>00 U78 D</p>
+                            <p><%= query.tickets[i].data %></p>
                         </div>
 
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Options</p>
-                            <p>1st Cl</p>
+                            <p><%= query.tickets[i].options %></p>
                         </div>
 
                         <div>
-                            <p class="mf-barcode">1894AUSATL</p>
+                            <p class="mf-barcode"><%=`${query.tickets[i].flight_number.substring(2)}${query.tickets[i].origin}${query.tickets[i].destination}`%></p>
                         </div>
                     </div>
                 </div>
@@ -196,25 +91,25 @@
                 <div class="mf-ticket-header">
                     <div class="mf-ticket-flight">
                         <p class="mf-ticket-small uk-text-muted">Flight</p>
-                        <p>Delta Airlines DL1894</p>
+                        <p><%= query.tickets[i].airline %> <%=query.tickets[i].flight_number%></p>
                     </div>
                 </div>
 
                 <div class="mf-ticket-body">
                     <div class="mf-ticket-passenger">
                         <p class="mf-ticket-small uk-text-muted">Passenger</p>
-                        <p>Steiner / Garnett</p>
+                        <p><%=query.tickets[i].passenger%></p>
                     </div>
 
                     <div class="mf-ticket-flight-information uk-margin uk-flex uk-flex-between">
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Seat</p>
-                            <p class="mf-ticket-large">5C</p>
+                            <p class="mf-ticket-large"><%=query.tickets[i].seat%></p>
                         </div>
 
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Departure</p>
-                            <p class="mf-ticket-large">11:47</p>
+                            <p class="mf-ticket-large"><%=`${query.tickets[i].departure.getHours()}:${query.tickets[i].departure.getMinutes() < 10 ? '0'+ query.tickets[i].departure.getMinutes() : query.tickets[i].departure.getMinutes()}`%></p>
                         </div>
                     </div>
                     
@@ -223,17 +118,18 @@
                     <div class="mf-ticket-flight-information uk-margin uk-flex uk-flex-between">
                         <div>
                             <p class="mf-ticket-small uk-text-muted">Options</p>
-                            <p>1st Cl</p>
+                            <p><%=query.tickets[i].options%></p>
                         </div>
 
                         <div>
-                            <p class="mf-barcode">1894AUSATL</p>
+                            <p class="mf-barcode"><%=`${query.tickets[i].flight_number.substring(2)}${query.tickets[i].origin}${query.tickets[i].destination}`%></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- END TICKET -->
+        <% } %>
     </div>
 </body>
 </html>

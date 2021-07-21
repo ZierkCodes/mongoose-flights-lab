@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+mongoose.set('useFindAndModify', false);
+
 const connectDB = async () => {
     console.log("CONNECTING DB")
     try {

@@ -10,6 +10,7 @@ import * as flightController from '../controllers/flight.js'
 //     res.render('flights/summary', {activePage: 'trip-summary'})
 // })
 router.post('/create', flightController.createFlight)
+router.put('/purchase', flightController.purchaseTickets)
 router.get('/summary', flightController.getOneWaySummary, flightController.getRoundTripSummary)
 
 // router.get('/checkout', function(req, res, next) {
@@ -19,9 +20,7 @@ router.get('/summary', flightController.getOneWaySummary, flightController.getRo
 router.get('/checkout', flightController.checkOutTrip, flightController.checkOutRoundTrip)
 router.get('/seats', flightController.selectOneWaySeats, flightController.selectRoundTripSeats)
 
-router.get('/confirmation', function(req, res, next) {
-    res.render('flights/confirmation', {activePage: 'confirmation'})
-})
+router.get('/confirmation/:confirmation_number', flightController.getConfirmation)
 
 router.get('/', flightController.queryOutboundFlights, flightController.queryReturnFlights)
 

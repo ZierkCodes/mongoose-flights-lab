@@ -185,27 +185,34 @@ if(window.location.href.indexOf('/seats') > -1) {
     seat.addEventListener('click', function(e) {
       console.log("avail?" + e.currentTarget.dataset.available)
       console.log(e.currentTarget.dataset.seat)
-      if(e.currentTarget.dataset.available == false) {
+      console.log(e.currentTarget.dataset.class)
+      console.log(outbound_class)
+      console.log(return_class)
+      if(e.currentTarget.dataset.available === false) {
         return;
       }
-      if(e.currentTarget.dataset.available === true && e.currentTarget.dataset.class === outbound_class || e.currentTarget.dataset.class === return_class) {
-        if(!selected_seat) {
-          // No seat previously selected
-          e.currentTarget.classList.add('selected')
-          e.currentTarget.innerHTML = `P${current_passenger}`
-          selected_seat = e.currentTarget
-        } else {
-          // They changed their selection, so update
-          selected_seat.classList.remove('selected')
-          selected_seat.innerHTML = ""
+      if(e.currentTarget.dataset.class === outbound_class || e.currentTarget.dataset.class === return_class) {
+        
+        if(e.currentTarget.dataset.available === 'true') {
           
-          e.currentTarget.classList.add('selected')
-          e.currentTarget.innerHTML = `P${current_passenger}`
-          selected_seat = e.currentTarget
+          if(!selected_seat) {
+            // No seat previously selected
+            e.currentTarget.classList.add('selected')
+            e.currentTarget.innerHTML = `P${current_passenger}`
+            selected_seat = e.currentTarget
+          } else {
+            // They changed their selection, so update
+            selected_seat.classList.remove('selected')
+            selected_seat.innerHTML = ""
+            
+            e.currentTarget.classList.add('selected')
+            e.currentTarget.innerHTML = `P${current_passenger}`
+            selected_seat = e.currentTarget
+          }
+  
+          seat_icon_el.classList.add('selected')
+          seat_icon_el.innerHTML = `<p class="uk-margin-remove uk-text-bold">${e.currentTarget.dataset.seat}</p>`
         }
-
-        seat_icon_el.classList.add('selected')
-        seat_icon_el.innerHTML = `<p class="uk-margin-remove uk-text-bold">${e.currentTarget.dataset.seat}</p>`
       }
     })
   })

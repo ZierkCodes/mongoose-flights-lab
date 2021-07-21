@@ -12,7 +12,9 @@ export {
     checkOutTrip,
     checkOutRoundTrip,
     selectOneWaySeats,
-    selectRoundTripSeats
+    selectRoundTripSeats,
+    purchaseTickets,
+    getConfirmation
  }
 
  const flight_fields = ['number', 'airline', 'plane', 'origin', 'destination', 'departure', 'duration', 'gate', 'amenities', 'tickets']
@@ -21,7 +23,7 @@ export {
  * This create method will automagically create a flight with all the required data at the click of a button! =) 
  */
 function createFlight(req, res) {
-    for(let i = 0; i < 1400; i++) {
+    for(let i = 0; i < 2000; i++) {
         let airline = randomAirline();
         let origin = randomAirport();
         let destination = randomDestination(origin.code);
@@ -69,6 +71,163 @@ function createFlight(req, res) {
         })
     }
     
+}
+
+function getConfirmation(req, res, next) {
+    Flight.find({
+        'tickets.confirmation_number': req.params.confirmation_number
+    }).exec((error, data) => {
+        if(error) {
+            throw (error)
+        } else {
+            console.log(data)
+        }
+        data = data.reverse()
+        let query = {}
+        query.confirmation_number = req.params.confirmation_number
+        if(data.length > 1) {
+            query.trip_type = 'round-trip'
+            query.outbound_class = data[0].tickets.find(ticket => ticket.confirmation_number === req.params.confirmation_number).flight_class
+            query.return_class = data[1].tickets.find(ticket => ticket.confirmation_number === req.params.confirmation_number).flight_class
+        } if(data[0].tickets) {
+            query.outbound_class = data[0].tickets.find(ticket => ticket.confirmation_number === req.params.confirmation_number).flight_class
+        } else {
+            query.outbound_class = data.tickets.find(ticket => ticket.confirmation_number === req.params.confirmation_number).flight_class
+        }
+
+        let tickets_array = []
+
+        for(var i = 0; i < data.length; i++) {
+            for(var j = 0; j < data[i].tickets.length; j++) {
+                if(data[i].tickets[j].confirmation_number === req.params.confirmation_number) {
+                    let ticket = {
+                        flight_number: data[i].number,
+                        origin: data[i].origin.code,
+                        destination: data[i].destination.code,
+                        departure: data[i].departure,
+                        gate: data[i].gate,
+                        airline: data[i].airline,
+                        confirmation_number: data[i].tickets[j].confirmation_number,
+                        tracking_number: data[i].tickets[j].tracking_number,
+                        data: data[i].tickets[j].data,
+                        options: data[i].tickets[j].options,
+                        flight_class: data[i].tickets[j].flight_class,
+                        seat: data[i].tickets[j].seat.isle + data[i].tickets[j].seat.number,
+                        boarding_zone: data[i].tickets[j].boarding_zone,
+                        passenger: `${data[i].tickets[j].passenger.last_name} / ${data[i].tickets[j].passenger.first_name}`
+                    }
+                    // let ticket = data[i].tickets[j]
+                    // flight_number: data[i].number
+                    // origin: data[i].origin.code
+                    // destination: data[i].destination.code
+                    // departure: data[i].departure
+                    // gate: data[i].gate
+                    // airline: data[i].airline
+                    console.log(ticket)
+                    tickets_array.push(ticket)
+                }
+            }
+        }
+
+        query.tickets = tickets_array
+        
+        res.render('flights/confirmation', {activePage: 'confirmation', data: data, query: query})
+    })
+    // res.render('flights/confirmation', {activePage: 'confirmation'})
+}
+
+function purchaseTickets(req, res, next) {
+    console.log("PURCHASE TICKETS!")
+    console.log("PURCHASE TICKETS!")
+    console.log("PURCHASE TICKETS!")
+    // Number of Passengers
+    // fname-i / lname-i from req.body // https://stackoverflow.com/questions/19466154/how-to-read-request-body-dynamic-attributes-in-express
+    // Ticket Tracking Numbers Array in String Format
+    // Outbound Flight
+    // Return Flight
+    let ob_tracking_numbers = req.body.ob_tracking_numbers.split(',')
+
+    let re_tracking_numbers
+    if(req.body.return_flight) {
+        re_tracking_numbers = req.body.re_tracking_numbers.split(',')
+    }
+    console.log("OB TRACK NO: ")
+    console.log(ob_tracking_numbers)
+    console.log("RE TRACK NO: ")
+    console.log(re_tracking_numbers)
+    let confirmation_number = generateConfirmationNumber()
+
+    for(let i = 0; i < req.body.total_passengers; i++) {
+        Flight.findOneAndUpdate({
+            'number': req.body.outbound_flight,
+            'tickets.tracking_number': ob_tracking_numbers[i]
+        }, {'$set': {
+            'tickets.$.passenger.first_name': req.body['fname-' + i],
+            'tickets.$.passenger.last_name': req.body['lname-' + i],
+            'tickets.$.confirmation_number': confirmation_number
+        }}, function(error) {
+            if(error) { console.error(error); }
+        })
+
+        if(req.body.return_flight) {
+            console.log("RUNNING RETURN")
+            Flight.findOneAndUpdate({
+                'number': req.body.return_flight,
+                'tickets.tracking_number': re_tracking_numbers[i]
+            }, {'$set': {
+                'tickets.$.passenger.first_name': req.body['fname-' + i],
+                'tickets.$.passenger.last_name': req.body['lname-' + i],
+                'tickets.$.confirmation_number': confirmation_number
+            }}, function(error) {
+                if(error) { console.error(error); }
+                
+            })
+        }
+        
+    }
+
+    return res.redirect('/flights/confirmation/' + confirmation_number)
+
+
+    // {$in: [req.query.outbound_flight, req.query.return_flight]}
+    /**
+     * let results = Flight.find({
+        'departure_date': departure_string,
+        'origin.code': req.query.return_origin, 
+        'destination.code': req.query.return_destination
+    })
+     */
+    
+    /**
+     * Person.update({'items.id': 2}, {'$set': {
+    'items.$.name': 'updated item2',
+    'items.$.value': 'two updated'
+}}, function(err) { ...
+     */
+
+    /**
+     * User.findOne({'local.rooms': {$elemMatch: {name: req.body.username}}}, function (err, user) {
+
+        if (err){
+            return done(err);
+        }    
+
+        if (user) {
+            console.log("ROOM NAME FOUND");
+            req.roomNameAlreadyInUse = true;
+            next();
+
+        } else {
+            req.roomNameAlreadyInUse = false;
+            console.log("ROOM NAME NOT FOUND");
+            next();
+
+        }
+
+    });
+     */
+
+    // console.log(data)
 }
 
 function selectOneWaySeats(req, res, next) {
@@ -141,7 +300,8 @@ function checkOutRoundTrip(req, res, next) {
     let results = Flight.find({'number': {$in: [req.query.outbound_flight, req.query.return_flight]}})
     let promise = results.exec()
     promise.then((data) => {
-        res.render('flights/payment', {activePage: 'review-and-pay', data: data.reverse(), query: {
+        data = data.reverse()
+        res.render('flights/payment', {activePage: 'review-and-pay', data: data, query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.outbound_flight,
             outbound_class: req.query.outbound_class,
@@ -179,7 +339,8 @@ function getRoundTripSummary(req, res, next) {
     let results = Flight.find({'number': {$in: [req.query.outbound_flight, req.query.return_flight]}})
     let promise = results.exec()
     promise.then((data) => {
-        res.render('flights/summary', {activePage: 'trip-summary', data: data.reverse(), query: {
+        data = data.reverse()
+        res.render('flights/summary', {activePage: 'trip-summary', data: data, query: {
             passengers: req.query.passengers,
             outbound_flight: req.query.outbound_flight,
             outbound_class: req.query.outbound_class,
@@ -190,9 +351,9 @@ function getRoundTripSummary(req, res, next) {
     })
 
 }
-
 function queryReturnFlights(req, res) {
     let year = new Date().getFullYear();
+        console.log(req.query.return_date)
         let req_date = req.query.return_date + ' ' + year
         let departure = new Date(req_date)
         let departure_string = dateString(departure)
@@ -206,9 +367,10 @@ function queryReturnFlights(req, res) {
     })
 
     let promise = results.exec();
+    console.log("???")
     
     promise.then((data) => {
-        return res.render('flights/flights', {data: data, query: {
+        res.render('flights/flights', {data: data, query: {
             flight_type: 'Return',
             trip_type: req.query.trip_type,
             origin: req.query.return_origin,
@@ -421,11 +583,7 @@ function randomAmenities(duration) {
     return amenities
 }
 
-function purchaseTickets(req, res, next) {
-    // First Name and Last Name for Each Passenger
-    // Tickets Array in String Format
-    // Flight Numbers
-}
+
 
 function generateTickets(flight) {
     let tickets = []
@@ -435,8 +593,11 @@ function generateTickets(flight) {
         row.forEach((seat) => {
             // Create Ticket and push to tickets array
             if(!seat.isle) {
+                let passenger = generatePassenger()
+                let confirmation_number = generateConfirmationNumber()
+
                 let ticket = {
-                    confirmation_number: generateConfirmationNumber(),
+                    confirmation_number: '',
                     tracking_number: generateTrackingNumber(),
                     data: generateDataNumber(),
                     options: '1ST CL',
@@ -447,7 +608,11 @@ function generateTickets(flight) {
                     },
                     boarding_zone: generateBoardingZone(),
                     price: prices.first,
-                    passenger: generatePassenger()
+                    passenger: passenger
+                }
+
+                if(passenger.first_name !== '' || passenger.first_name.length > 1) {
+                    ticket.confirmation_number = confirmation_number
                 }
     
                 tickets.push(ticket);
