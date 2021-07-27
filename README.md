@@ -5,7 +5,7 @@ To push myself and gain real-world experience, I modeled Delta Airlines to creat
 This led to a few changes by the end of the project. Overall, I feel this was incredibly challenging, and a bit over my head.
 
 ### Known Bugs
-Generating new flights is an expensive request, which Heroku will throw an error. The requests will still complete on the server-side, but you may encounter an error from Heroku. You can simply navigate back to the home page, just fine.
+Generating new flights is an expensive request, which Heroku will throw an error. The requests will still complete on the server-side, but you may encounter an error from Heroku. You can simply navigate back to the home page, just fine. (The only way to fix this is to upgrade the Dynos, which I will not be doing for this app.)
 
 ### July 27 Bug Fixes
 There were some issues with the last code refactor on the previous commit. This caused a few things to break, and took a bit of time fixing them, due to the fact I was trying to figure out multiple promises in nested for each loops. I eventually figured out I could use the spread operator to wait for the tickets, so that has all been fixed, and everything is working accordingly.
