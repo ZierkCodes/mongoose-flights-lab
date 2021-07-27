@@ -6,7 +6,6 @@ if(window.location.href.indexOf('/itinerary') > -1) {
   let confirmation_number = document.querySelector('#confirmation_number')
   
   submit.addEventListener('click', () => {
-    console.log(confirmation_number.value)
     if(confirmation_number.value.length > 3) {
       form.action = `/flights/confirmation/${confirmation_number.value}`
       form.submit()
@@ -46,7 +45,7 @@ if(create_flights_link) {
   const form = document.querySelector('#create-flights-form')
   create_flights_link.addEventListener('click', () => {
     form.submit()
-    UIkit.modal.dialog('<div class="uk-padding uk-flex uk-flex-column uk-flex-center uk-text-center"><span uk-spinner="ratio: 4.5"></span><h3 class="uk-text-primary">We are creating your flights!</h3><p class="uk-margin-remove uk-text-muted">When finished, you will be redirected back to the home page.</p></div>');
+    UIkit.modal.dialog('<div class="uk-padding uk-flex uk-flex-column uk-flex-center uk-text-center"><span uk-spinner="ratio: 4.5"></span><h3 class="uk-text-primary">We are creating your flights!</h3><p class="uk-margin-remove uk-text-muted">Please be patient, this usually takes a while. When finished, you will be redirected back to the home page.</p></div>');
   })
 }
 
@@ -61,22 +60,57 @@ if(searchFlightsBtn) {
   let trip_type_elem = document.querySelector('#trip_type')
   let origin_text = document.querySelector('#origin-text')
   let destination_text = document.querySelector('#destination-text')
+  let origin_modal = document.querySelector('#from')
+  let destination_modal = document.querySelector('#to')
 
-  origin_elem.addEventListener('keyup', (e) => {
-    origin_text.innerText = origin_elem.value
-    if(origin_elem.value === '') {
-      origin_text.innerText = 'From'
+  origin_elem.addEventListener('keydown', (e) => {
+    if(e.code === 'Enter') {
+      e.preventDefault()
+      origin_text.innerText = origin_elem.value
+      if(origin_elem.value === '') {
+        origin_text.innerText = 'From'
+      }
+      UIkit.modal(origin_modal).hide();
+      return
     }
   })
 
-  destination_elem.addEventListener('keyup', (e) => {
-    destination_text.innerText = destination_elem.value
-    if(destination_elem.value === '') {
-      destination_text.innerText = 'To'
+  destination_elem.addEventListener('keydown', (e) => {
+    if(e.code === 'Enter') {
+      e.preventDefault()
+      destination_text.innerText = destination_elem.value
+      if(destination_elem.value === '') {
+        destination_text.innerText = 'To'
+      }
+      UIkit.modal(destination_modal).hide();
+      return;
     }
   })
 
+  origin_modal.addEventListener('click', (e) => {
+    if(e.target.id === 'from') {
+      e.preventDefault()
+      origin_text.innerText = origin_elem.value
+      if(origin_elem.value === '') {
+        origin_text.innerText = 'From'
+      }
+      UIkit.modal(origin_modal).hide()
+      return
+    }
+    
+  });
 
+  destination_modal.addEventListener('click', (e) => {
+    if(e.target.id === 'to') {
+      e.preventDefault()
+      destination_text.innerText = destination_elem.value
+      if(destination_elem.value === '') {
+        destination_text.innerText = 'To'
+      }
+      UIkit.modal(destination_modal).hide();
+      return;
+    }
+  })
 
   searchFlightsBtn.addEventListener('click', (e) => {
     if(!origin_elem.value || !destination_elem.value || !passengers_elem.value || !departure_date_elem.value || !trip_type_elem.value) {
@@ -107,8 +141,6 @@ if(searchFlightsBtn) {
 }
 
 if(window.location.href.indexOf('/seats') > -1) {
-  console.log("You're on the seats page!")
-
   const trip_type_el = document.querySelector('#trip-type-data')
   const passenger_el = document.querySelector('#passenger-data')
 
@@ -244,11 +276,6 @@ if(window.location.href.indexOf('/seats') > -1) {
 
   seats.forEach((seat) => {
     seat.addEventListener('click', function(e) {
-      console.log("avail?" + e.currentTarget.dataset.available)
-      console.log(e.currentTarget.dataset.seat)
-      console.log(e.currentTarget.dataset.class)
-      console.log(outbound_class)
-      console.log(return_class)
       if(e.currentTarget.dataset.available === false) {
         return;
       }
@@ -278,235 +305,6 @@ if(window.location.href.indexOf('/seats') > -1) {
     })
   })
 }
-
-
-
-
-//   seats.forEach((seat) => {
-//     seat.addEventListener('click', function(e) {
-//       console.log("CLICK");
-//       console.log(e.currentTarget.dataset.class);
-//       console.log(outboundClassData)
-//       // return Class Data//currentSelection
-
-//       if(currentSelection === 'outbound') {
-//         if(e.currentTarget.dataset.available === 'true' && e.currentTarget.dataset.class === outboundClassData) {
-//           console.log(selectedSeat);
-//           if(!selectedSeat) {
-//             e.currentTarget.classList.add('selected');
-//             e.currentTarget.innerHTML = `<span>${e.currentTarget.dataset.seat}</span>`;
-//             selectedSeat = e.currentTarget;
-//           } else {
-//             selectedSeat.classList.remove('selected');
-//             selectedSeat.innerHTML = "";
-//             e.currentTarget.classList.add('selected');
-//             e.currentTarget.innerHTML = `<span>${e.currentTarget.dataset.seat}</span>`;
-//             selectedSeat = e.currentTarget;
-//           }
-//           seatIcon.classList.add('selected');
-//           seatIcon.innerHTML = `<p class="uk-margin-remove uk-text-bold">${e.currentTarget.dataset.seat}</p>`
-//         }
-//       } else {
-//         if(e.currentTarget.dataset.available === 'true' && e.currentTarget.dataset.class === returnClassData) {
-//           console.log(selectedSeat);
-//           if(!selectedSeat) {
-//             e.currentTarget.classList.add('selected');
-//             e.currentTarget.innerHTML = `<span>${e.currentTarget.dataset.seat}</span>`;
-//             selectedSeat = e.currentTarget;
-//           } else {
-//             selectedSeat.classList.remove('selected');
-//             selectedSeat.innerHTML = "";
-//             e.currentTarget.classList.add('selected');
-//             e.currentTarget.innerHTML = `<span>${e.currentTarget.dataset.seat}</span>`;
-//             selectedSeat = e.currentTarget;
-//           }
-//           seatIcon.classList.add('selected');
-//           seatIcon.innerHTML = `<p class="uk-margin-remove uk-text-bold">${e.currentTarget.dataset.seat}</p>`
-//         }
-//       }
-//     });
-// if(seats) {
-//   const selectOutboundSeatsEl = document.querySelector('#select-outbound-seats')
-//   const selectReturnSeatsEl = document.querySelector('#select-return-seats')
-
-//   const outboundClassDataEl = document.querySelector('#outbound-class-data')
-//   const outboundFlightDataEl = document.querySelector('#outbound-flight-data')
-//   const passengerDataEl = document.querySelector('#passenger-data')
-//   const tripTypeDataEl = document.querySelector('#trip-type-data')
-
-//   const outboundClassData = outboundClassDataEl.innerText.trim()
-//   const outboundFlightData = outboundFlightDataEl.innerText.trim()
-//   const passengerData = Number(passengerDataEl.innerText.trim())
-//   const tripTypeData = tripTypeDataEl.innerText.trim()
-
-//   let returnClassDataEl;
-//   let returnFlightDataEl;
-//   let returnClassData;
-//   let returnFlightData;
-
-//   if(tripTypeData === 'round-trip') {
-//     returnClassDataEl = document.querySelector('#return-class-data')
-//     returnFlightDataEl = document.querySelector('#return-flight-data')
-//     returnClassData = returnClassDataEl.innerText.trim()
-//     returnFlightData = returnFlightDataEl.innerText.trim()
-//   }
-
-//   const exitBtn = document.querySelector('#exit-btn')
-//   const nextPassengerBtn = document.querySelector('#next-passenger-btn')
-//   const nextFlightBtn = document.querySelector('#next-flight-btn');
-//   const saveBtn = document.querySelector('#save-btn')
-
-//   let selectedSeat = null
-//   let currentPassenger = 1
-//   let currentSelection = 'outbound'
-//   let selectedOutboundSeats = []
-//   let selectedReturnSeats = []
-
-//   let seatIcon = document.querySelector('.mf-seat-selection')
-//   let passengerText = document.querySelector('#passenger-count')
-
-//   passengerText.innerText = currentPassenger;
-
-//   if(passengerData > 1) {
-//     // There is more than 1 passenger, show next passenger button
-//     nextPassengerBtn.removeAttribute('hidden')
-//   } else {
-//     if(tripTypeData === 'round-trip') {
-//       // There is only 1 passenger, and trip is round trip, so show next flight btn
-//       nextFlightBtn.removeAttribute('hidden')
-//     } else {
-//       // There is only 1 passenger, and trip is one way. Show save btn
-//       saveBtn.removeAttribute('hidden')
-//     }
-//   }
-
-//   // Need to add error handling for btns.
-//   nextPassengerBtn.addEventListener('click', () => {
-//     currentPassenger++
-//     passengerText.innerText = currentPassenger;
-//     selectedSeat = null;
-//     seatIcon.classList.remove('selected');
-//     seatIcon.innerHTML = `<p class="uk-margin-remove uk-text-bold">–</p>`
-//     if(currentPassenger === passengerData) {
-//       // We are at the last passenger - update the button
-//       if(currentSelection === 'return') {
-//         // We are on the last flight, show the save button
-//         nextPassengerBtn.setAttribute('hidden', '')
-//         if(tripTypeData === 'round-trip') {
-//           saveBtn.removeAttribute('hidden')
-//         }
-//       } else {
-//         nextPassengerBtn.setAttribute('hidden', '')
-//         if(tripTypeData === 'round-trip') {
-//           nextFlightBtn.removeAttribute('hidden')
-//         } else {
-//           // This is a one-way and passenger is done selecting seats, show save btn
-//           saveBtn.removeAttribute('hidden')
-//         }
-//       }
-      
-//     }
-//   });
-
-//   saveBtn.addEventListener('click', () => {
-//     let selectedSeats = document.querySelectorAll(".mf-seat.selected")
-    
-//     selectedSeats.forEach((seat) => {
-//       if(currentSelection === 'outbound') {
-//         selectedOutboundSeats.push(seat.dataset.seat)
-//       } else {
-//         selectedReturnSeats.push(seat.dataset.seat)
-//       }
-//     })
-
-//     // BUILD THE QUERY
-//     // - Trip Type
-//     // - Passengers
-//     // - Outbound Flight #
-//     // - Outbound Flight Class
-//     // - Outbound Seats
-//     // - IF RETURN FLIGHT
-//     // - Return Flight #
-//     // - Return Flight Class
-//     // - Return Seats
-
-//     let url = `/flights/checkout?trip_type=${tripTypeData}&passengers=${passengerData}&outbound_flight=${outboundFlightData}&outbound_class=${outboundClassData}&outbound_seats=${selectedOutboundSeats.toString()}&return_flight=${returnFlightData}&return_class=${returnClassData}&return_seats=${selectedReturnSeats}`;
-//     return window.location.href = url;
-//   })
-
-//   nextFlightBtn.addEventListener('click', () => {
-//     // Get Selected Seats
-//     let selectedSeats = document.querySelectorAll(".mf-seat.selected")
-//     selectedSeats.forEach((seat) => {
-//       selectedOutboundSeats.push(seat.dataset.seat);
-//       seat.classList.remove('selected')
-//       seat.innerText = ''
-//     })
-
-//     currentSelection = 'return';
-//     seatIcon.classList.remove('selected');
-//     seatIcon.innerHTML = `<p class="uk-margin-remove uk-text-bold">–</p>`
-//     currentPassenger = 1;
-
-//     selectOutboundSeatsEl.setAttribute('hidden', '')
-//     selectReturnSeatsEl.removeAttribute('hidden')
-
-//     nextFlightBtn.setAttribute('hidden', '')
-//     nextPassengerBtn.removeAttribute('hidden')
-//   })
-
-//   seats.forEach((seat) => {
-//     seat.addEventListener('click', function(e) {
-//       console.log("CLICK");
-//       console.log(e.currentTarget.dataset.class);
-//       console.log(outboundClassData)
-//       // return Class Data//currentSelection
-
-//       if(currentSelection === 'outbound') {
-//         if(e.currentTarget.dataset.available === 'true' && e.currentTarget.dataset.class === outboundClassData) {
-//           console.log(selectedSeat);
-//           if(!selectedSeat) {
-//             e.currentTarget.classList.add('selected');
-//             e.currentTarget.innerHTML = `<span>${e.currentTarget.dataset.seat}</span>`;
-//             selectedSeat = e.currentTarget;
-//           } else {
-//             selectedSeat.classList.remove('selected');
-//             selectedSeat.innerHTML = "";
-//             e.currentTarget.classList.add('selected');
-//             e.currentTarget.innerHTML = `<span>${e.currentTarget.dataset.seat}</span>`;
-//             selectedSeat = e.currentTarget;
-//           }
-//           seatIcon.classList.add('selected');
-//           seatIcon.innerHTML = `<p class="uk-margin-remove uk-text-bold">${e.currentTarget.dataset.seat}</p>`
-//         }
-//       } else {
-//         if(e.currentTarget.dataset.available === 'true' && e.currentTarget.dataset.class === returnClassData) {
-//           console.log(selectedSeat);
-//           if(!selectedSeat) {
-//             e.currentTarget.classList.add('selected');
-//             e.currentTarget.innerHTML = `<span>${e.currentTarget.dataset.seat}</span>`;
-//             selectedSeat = e.currentTarget;
-//           } else {
-//             selectedSeat.classList.remove('selected');
-//             selectedSeat.innerHTML = "";
-//             e.currentTarget.classList.add('selected');
-//             e.currentTarget.innerHTML = `<span>${e.currentTarget.dataset.seat}</span>`;
-//             selectedSeat = e.currentTarget;
-//           }
-//           seatIcon.classList.add('selected');
-//           seatIcon.innerHTML = `<p class="uk-margin-remove uk-text-bold">${e.currentTarget.dataset.seat}</p>`
-//         }
-//       }
-//     });
-
-//     // if(seat.dataset.class !== outboundClassData) {
-//     //   if(seat.dataset.available === 'true') {
-//     //     seat.classList.add('unavailable');
-//     //     seat.innerHTML = '<span uk-icon="icon: close; ratio: 1.3"></span>'
-//     //   }
-//     // }
-//   });
-// }
 
 /* Summary Stuff */
 let outboundChevron = document.querySelector('#outbound-chevron');

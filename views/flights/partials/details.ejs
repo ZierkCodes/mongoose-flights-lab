@@ -5,24 +5,16 @@
             <% if (data.length === 0) { %> 
                         <div class="uk-alert-danger" uk-alert>
                             <a class="uk-alert-close" uk-close></a>
-                            <form id="create-flights-form" method="POST" action="/flights/create"><p class="uk-margin-remove">No flights were found matching your dates. (If you are having trouble finding a flight, you can generate 200 random new flights by clicking <a id="create-flights-link"><b>here</b></a>.)</p></form>
+                            <form id="create-flights-form" method="POST" action="/flights/create"><p class="uk-margin-remove">No flights were found matching your dates. (If you are having trouble finding a flight, you can generate 10 random new flights by clicking <a id="create-flights-link"><b>here</b></a>.)</p></form>
                         </div>
             <% } %>
-            <!-- <div class="uk-flex uk-flex-center">
-                <h2 class="uk-text-light uk-margin-right">Saturday <span class="uk-text-primary uk-text-normal">Aug 23</span></h2>
-                <div><a href="#"><span uk-icon="icon: settings"></span></a></div>
-            </div> -->
         </header>
-        <!-- data.forEach((flight)-->
         <!-- START FLIGHT INFO -->
-        
-        <% console.log(data) %>
-        
+                
         
         <% if(data) { %>
         <% data.forEach((flight) => { %>
         <div class="uk-card uk-card-default uk-card-body uk-width-5-5 uk-flex uk-flex-between uk-padding-remove uk-margin-large-bottom">
-            <!-- <div class="uk-card-badge uk-label mf"><span uk-icon="tag"></span> Lowest Fare</div> -->
             <div class="uk-width-2-5">
                 <div class="uk-padding uk-flex-column">
                     <!-- Flight# and Duration -->
@@ -60,7 +52,6 @@
                         <div>
                             <h2 class="uk-text-light ">
                                 <% hours = flight.departure.getHours() + flight.duration.hours %>
-                                <% console.log(hours) %>
                                 <% minutes = flight.departure.getMinutes() + flight.duration.minutes %>
                                 <% if(minutes >= 60) { hours += Math.floor(minutes / 60); minutes = minutes % 60 } %>
                                 <% if(hours >= 24) { hours = hours % 24 } %>
@@ -82,10 +73,6 @@
                             <small class="uk-text-left uk-text-bold uk-text-secondary"><%= flight.origin.code %></small>
                             <small class="uk-text-left"><%= flight.origin.city %></small>
                         </div>
-                        <!-- <div class="uk-flex uk-flex-column uk-flex-top">
-                            <small class="uk-text-muted">Nonstop</small>
-                            <br/>
-                        </div> -->
                         <div class="uk-flex uk-flex-column uk-flex-top">
                             <small class="uk-text-bold uk-text-secondary uk-text-right" style="margin-left: auto"><%= flight.destination.code %></small>
                             <small class="uk-text-right"><%= flight.destination.city %></small>
@@ -199,40 +186,5 @@
         <% }) %>
         <% } %>
         <!-- END FLIGHT INFO -->
-
-
-
-        <!-- UNAVAILABLE CARD -->
-        <!-- <div class="uk-width-1-5 mf-class-options uk-padding first uk-flex uk-flex-column uk-flex-middle uk-flex-center uk-flex-space-around">
-            <p class="uk-text-center uk-text-muted uk-margin-small">Unavailable</p>
-        </div> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
 </div>

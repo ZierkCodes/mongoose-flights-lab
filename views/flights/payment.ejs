@@ -312,7 +312,6 @@
                         </small>
                     </div>
                     
-
                     <div class="uk-width-2-2">
                         <div class="uk-flex uk-flex-between uk-flex-top uk-margin">
                             <h5 class="uk-text-light uk-margin-remove uk-width-1-4">Outbound Flight</h5>
@@ -345,7 +344,6 @@
                                 }) %>
                                 
                             <% } %>
-                            <% console.log(outbound_ticket_price) %>
                             <h5 class="uk-text-light uk-margin-remove uk-width-1-4">$<%= outbound_ticket_price %><span class="uk-text-muted"> x<%= query.passengers %></span></h5>
                             <h3 class="uk-margin-remove uk-width-1-4 uk-text-right">$<%= outbound_total %></h3>
                         </div>
@@ -440,9 +438,7 @@
                         })
                     }
                 } %>
-                <% console.log("TRACKING") %>
-                <% console.log(ob_tracking_numbers.toString()) %>
-                <% console.log(re_tracking_numbers.toString()) %>
+
                 <input type="text" id="ob_tracking_numbers" name="ob_tracking_numbers" value="<%= ob_tracking_numbers.toString() %>" form="checkout" hidden />
                 <input type="text" id="re_tracking_numbers" name="re_tracking_numbers" value="<%= re_tracking_numbers.toString() %>" form="checkout" hidden />
                 <input type="text" id="outbound_flight" name="outbound_flight" value="<%= ob_flight_number %>" form="checkout" hidden />

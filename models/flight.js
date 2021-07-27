@@ -22,8 +22,7 @@ const ticketSchema = new Schema({
         default: ''
     },
     flight_class: {
-        type: String,
-        required: true
+        type: String
     },
     seat: {
         isle: {
@@ -34,12 +33,10 @@ const ticketSchema = new Schema({
         }
     },
     boarding_zone: {
-        type: String,
-        required: true
+        type: String
     },
     price: {
-        type: Number,
-        required: true
+        type: Number
     },
     passenger: {
         first_name: {
@@ -55,19 +52,16 @@ const ticketSchema = new Schema({
 // ! UPDATE ORIGIN AND DESTINATION WITH AIRPORT REFERENCES!!!
 const flightSchema = new Schema({
     number: {
-        type: String,
-        required: true
+        type: String
     },
     airline: {
         type: String,
-        enum: ['Southwest Airlines', 'Delta', 'American Airlines', 'United Airlines'],
-        required: true
+        enum: ['Southwest Airlines', 'Delta', 'American Airlines', 'United Airlines']
     },
     plane: {
         name: {
             type: String,
-            enum: ['Boeing B737', 'Airbus A319', 'Airbus A320', 'Embraer EMB'],
-            required: true
+            enum: ['Boeing B737', 'Airbus A319', 'Airbus A320', 'Embraer EMB']
         },
         sections: {
             first_class: {
@@ -700,58 +694,46 @@ const flightSchema = new Schema({
     },
     origin: {
         code: {
-            type: String,
-            required: true
+            type: String
         },
         city: {
-            type: String,
-            required: true
+            type: String
         }
     },
     destination: {
         code: {
-            type: String,
-            required: true
+            type: String
         },
         city: {
-            type: String,
-            required: true
+            type: String
         }
     },
     departure: {
-        type: Date,
-        required: true
+        type: Date
     },
     departure_date: {
-        type: String,
-        required: true
+        type: String
     },
     duration: {
         hours: {
-            type: Number,
-            required: true
+            type: Number
         },
         minutes: {
-            type: Number,
-            required: true
+            type: Number
         }
     },
     gate: {
-        type: String,
-        required: true
+        type: String
     },
     amenities: {
         technology: {
-            type: Boolean,
-            required: true
+            type: Boolean
         },
         entertainment: {
-            type: Boolean,
-            required: true
+            type: Boolean
         },
         meals: {
-            type: Boolean,
-            required: true
+            type: Boolean
         }
     },
     tickets: [ticketSchema]

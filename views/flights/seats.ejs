@@ -104,7 +104,6 @@
                                             
                                         }
                                     } %>
-                                    <% console.log(occupied) %>
                                     <% if(occupied) { %>
                                         <% if(seat.exit === true) { %>
                                             <div class="mf-seat preferred unavailable uk-flex uk-flex-middle uk-flex-center mf-exit-seat" data-available="false" data-seat=<%= `${seat.letter}${index + data[0].plane.sections.first_class.total_rows + 1}` %> data-class="preferred">
@@ -159,7 +158,6 @@
                                         
                                         if(data[0].tickets[x].seat.isle === seat.letter && data[0].tickets[x].flight_class === 'economy' && (index + data[0].plane.sections.first_class.total_rows + data[0].plane.sections.preferred_class.total_rows + 1) === (data[0].tickets[x].seat.number)) {
                                             if(data[0].tickets[x].passenger.first_name === '') {
-                                                console.log(data[0].tickets[x].passenger.first_name)
                                                 occupied = false
                                             } else {
                                                 occupied = true
